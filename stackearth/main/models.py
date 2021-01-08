@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Team(models.Model):
@@ -31,7 +32,7 @@ class Address(models.Model):
 
 
 class Employee(models.Model):
-    name = models.CharField(max_length=50)
+    user = models.ForeignKey(User,default=None,on_delete=models.CASCADE,null=True)
     age = models.CharField(max_length=2)
     email = models.EmailField(max_length=100)
     phone_number = models.CharField(max_length=10)
@@ -41,7 +42,52 @@ class Employee(models.Model):
     salary = models.CharField(max_length=10)
 
     def __str__(self):
-        return self.name
+        return str(self.user)
+
+class Attendance(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    date = models.DateTimeField(auto_now_add=True)
+    present = models.BooleanField(default=True)
+
+    def __str__(self):
+        return str(self.user)
+
+
+class Leave(models.Model):
+    applicant = models.ForeignKey(User,on_delete=models.CASCADE)
+    from_date = models.DateTimeField(auto_now_add=True)
+    till_date = models.DateTimeField()
+    reason = models.TextField(max_length=300)
+    confirmed = models.BooleanField(default=False)
+
+    def __str__(self):
+        return str(self.user)
+
+
+class Loan(models.Model):
+    applicant = models.ForeignKey(User,on_delete=models.CASCADE)
+    amount = models.FloatField(default=0)
+    start_date = models.DateField()
+    pay_upto = models.DateField()
+    confirmation = models.BooleanField(default=False)
+
+    def __str__(self):
+        return str(self.applicant)
+
+
+class Bonus(models.Model):
+    applicant = models.ForeignKey(User,on_delete=models.CASCADE)
+    confirmation = models.BooleanField(default=False)
+
+    def __str__(self):
+        return str(self.applicant)
+
+
+
+
+
+
+
     
 
 
