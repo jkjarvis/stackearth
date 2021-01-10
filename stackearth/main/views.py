@@ -12,7 +12,7 @@ class Get_employees_List(APIView):
         return Response(serialized.data)
 
 
-def homepage(request):
-    return render(request, 'index.html')
+def home(request):
+    return render(request, 'main/index.html')
 
 # Create your views here.
