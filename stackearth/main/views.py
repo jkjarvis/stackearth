@@ -26,5 +26,7 @@ def createEmployee(request):
     data = request.body
     print(data)
 
+def home(request):
+    return render(request, 'main/index.html')
 
 # Create your views here.
