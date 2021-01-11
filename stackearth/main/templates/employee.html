@@ -1,0 +1,74 @@
+{% load static %}
+<html>
+    <head>Create Employee</head>
+    <body>
+        <form id="form" method="POST">
+            <input id="first_name" type="text" name="title">
+            <input id="last_name" type="text" name="lang">
+            <input  type="submit" name="submit" value="submit">
+        </form>
+
+    
+    <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+    <script src="{% static 'js/jquery.slicknav.js' %}"></script>
+    <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'js/jquery.nice-select.min.js' %}"></script>
+    <script src="{% static 'js/mixitup.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    <script>
+        
+        $('#form').on('submit', function(e){
+
+e.preventDefault();
+var form = document.querySelector('form');
+var data = new FormData(form);
+console.log(data);
+
+  $.ajax({
+       type : "POST", 
+       url: "{% url 'main:create_emp' %}",
+       data: data,
+       
+       success: function(data){
+          $('#output').html(data.msg) /* response message */
+       },
+
+       failure: function() {
+           
+       }
+
+
+   });
+
+
+        });
+    </script>
+<!-- <script> -->
+
+<!-- //         $("#form").submit(function(e) {
+
+// e.preventDefault(); // avoid to execute the actual submit of the form.
+
+// var form = $(this);
+// var url = form.attr('action');
+
+// $.ajax({
+//        type: "POST",
+//        url: url,
+//        data: form.serialize(), // serializes the form's elements.
+//        success: function(data)
+//        {
+//            alert(data); // show response from the php script.
+//        }
+//      });
+
+
+// }); -->
+
+<!-- </script> -->
+    </body>
+</html>

@@ -36,9 +36,9 @@ class Employee(models.Model):
     age = models.CharField(max_length=2)
     email = models.EmailField(max_length=100)
     phone_number = models.CharField(max_length=10)
-    address = models.ForeignKey(Address, on_delete=models.CASCADE)
-    role = models.ForeignKey(Role, on_delete=models.CASCADE)
-    team = models.ForeignKey(Team, on_delete=models.CASCADE)
+    address = models.ForeignKey(Address, on_delete=models.CASCADE,null=True)
+    role = models.ForeignKey(Role, on_delete=models.CASCADE,null=True)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE,null=True)
     salary = models.CharField(max_length=10)
 
     def __str__(self):
