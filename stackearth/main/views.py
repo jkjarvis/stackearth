@@ -7,7 +7,7 @@ from .models import Employee, Address, Team, Role, Attendance, Leave, Loan, Bonu
 from .serializers import employeeSerializer, addressSerializer, roleSerializer, teamSerializer, attendanceSerializer,leaveSerializer,loanSerializer,bonusSerializer
 import json
 from django.views.decorators.csrf import csrf_exempt
-from .models import Employee
+from .models import Employee,Address
 
 
 class Get_employees_List(APIView):
@@ -35,11 +35,20 @@ def createEmployee(request):
     salary = data['salary']
     role = data['role']
     team = data['team']
+    house_number = data['house_number']
+    street = data['street']
+    city = data['city']
+    state = data['state']
+    pincode = data['pincode']
 
     password = User.objects.make_random_password(length=10)
     user = User.objects.create(username=name,email=email)
     user.set_password(password)
     user.save()
+
+    address = Address.objects.create(user=user,house_no=house_number,street=street,city=city,state=state,pincode=pincode)
+
+
 
     Employee.objects.create(name=name,age=age,email=email,phone_number=ph_number,address=address,salary=salary,role=role,team=team)
 
