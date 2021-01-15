@@ -21,6 +21,7 @@ class Role(models.Model):
 
 
 class Address(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE,null=True)
     house_no = models.CharField(max_length=20)
     street = models.CharField(max_length=30)
     city = models.CharField(max_length=30)
@@ -28,12 +29,12 @@ class Address(models.Model):
     pincode = models.CharField(max_length=6)
 
     def __str__(self):
-        return str(self.employee)
+        return str(self.user)
 
 
 class Employee(models.Model):
     user = models.ForeignKey(User,default=None,on_delete=models.CASCADE,null=True)
-    age = models.CharField(max_length=2)
+    dob = models.DateField(null=True)
     email = models.EmailField(max_length=100)
     phone_number = models.CharField(max_length=10)
     address = models.ForeignKey(Address, on_delete=models.CASCADE,null=True)
