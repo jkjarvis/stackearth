@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"name": "stackearth",
+			"path": "."
+		},
+		{
+			"name": "getcourseinfo",
+			"path": "..\\getcourseinfo"
+		},
+		{
+			"path": "c:\\xampp\\htdocs\\cgb\\lang_ref"
+		}
+	],
+	"settings": {}
+}
