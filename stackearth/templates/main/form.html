@@ -1,0 +1,123 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>HRML | Do your Shit</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <!-- <script src="http://code.jquery.com/jquery-1.11.1.min.js" integrity="sha256-VAvG3sHdS5LqTT+5A/aeq/bZGa/Uj04xKxY8KM/w9EE=" crossorigin="anonymous"></script> -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+  <script src="{% static "js/form.js" %}" charset="utf-8"></script>
+  <link rel="stylesheet" href="topic.css">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;800&display=swap" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+    function fetchAttendance() {
+    console.log('date inputted');
+  $.ajax({
+    type: 'POST',
+    url: 'http://127.0.0.1:8000/getAttendance',
+    dataType: 'json',
+    data:{
+          date : $('#atdDate').val(),
+          },
+    })
+}
+      
+  </script>
+</head>
+
+<body>
+  <div class="jumbotron">
+    <h1 class="display-4">HRM | Admin</h1>
+    <p class="lead">Welcome to HRM</p>
+    <hr class="my-4">
+    <p>Just do your shit.</p>
+    <p class="lead">
+      <!-- <a class="btn btn-primary btn-lg" href="#" role="button">Contribute</a> -->
+    </p>
+  </div>
+
+  <div class="row container">
+    <div class="col">
+      <div class="container" style="height: 100%;">
+        <div id="side_form" class="p-3 mb-5 bg-white rounded form-style">
+          <!-- <form method="post" action=""> -->
+          <fieldset>
+            <p class="info">Fill in employee details:</p class="info">
+            <span class="info">Emp name:</span>
+            <input type="text" class="tbox1 field-style" id="uname" placeholder="Lamar"><br>Remaining: <b><span class="remtext1" style="color: #1d91d1;"></span></b><br><br>
+            <span class="info">Date Of Birth:</span>
+            <input type="date" class="tbox2 field-style" id="dob" placeholder="Davis"><br>Remaining: <b><span class="remtext2" style="color: #1d91d1;"></span></b><br><br>
+            <span class="info">E-mail:</span>
+            <input type="email" class="tbox3 field-style" name="usemail" id="useremail" placeholder="lamardavis@mofu.com" style="width: 15rem;"><br>Remaining: <b><span class="remtext3" style="color: #1d91d1;"></span></b><br><br>
+
+            <span class="info">Phone-number:</span>
+            <input type="text" id="phone_number" class="profiles field-style" placeholder="1234567890"><br><br>
+            <span class="info">Address:</span><br>
+            <textarea name="address" id="address" cols="30" rows="10"></textarea><br><br>
+            <span class="info">Salary:</span>
+            <input type="number" id="salary" class="profiles field-style" placeholder="45000">
+            <br><br>
+            <div class="row">
+              <div class="col-sm">
+            <span class="info">Select role:</span>
+            <div class="select">
+            <select name="role" id="role">
+              <option>Select</option>
+              <option>Developer</option>
+              <option>Designner</option>
+            </select>
+            </div>
+            </div>
+            <div class="col-sm">
+            <span class="info">Select team:</span>
+            <div class="select">
+            <select name="team" id="team">
+              <option>Select</option>
+              <option>Front-end team</option>
+              <option>Back-end team</option>
+            </select>
+            </div>
+            </div>
+            </div>
+            <br><br>
+            <div class="row">
+              <div class="col-sm">
+                House Number: <input type="text" name="house_number" id="house_number"><br>
+                Street: <input type="text" name="street" id="street"><br>
+                City: <input type="text" name="city" id="city"><br>
+                State: <input type="text" name="state" id="state"><br>
+                Pincode: <input type="text" name="pincode" id="pincode"><br>
+              </div>
+            </div>
+            <div class="col-md-12">
+
+              <br>
+              <!-- <br> -->
+              <button type="submit" class="btn btn-success btn-block" name="submitform" onclick="addEmp();">POST</button>
+
+              <!-- </form> -->
+            </div>
+            <!-- <textarea name="articleArea" id="article" rows="8" cols="55" placeholder="Write here" maxlength="1500" onDrop="return false;"></textarea> -->
+            <!-- <br />Remaining: <b><span class="remaining" style="color: #1d91d1;"></span></b> -->
+            <!-- <button id="post" class="btn btn-primary" name="post_form" onclick="submitArticle();">POST</button> -->
+          </fieldset>
+          <!-- </form> -->
+          
+          <div class="select">
+            <input type="date" id='atdDate' onchange="fetchAttendance();">
+            <br>
+          
+            <button type="submit" class="btn btn-success btn-block" name="submitform">SUBMIT</button>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>          
+
+</body>
+
+</html>
