@@ -17,8 +17,11 @@ class Get_employees_List(APIView):
         return Response(serialized.data)
 
 
-def homepage(request):
-    return render(request, 'main/index.html')
+def home(request):
+    return render(request, 'main/home.html')
+
+def base(request):
+    return render(request,'main/base.html')
 
 @csrf_exempt
 def showForm(request):
@@ -53,10 +56,5 @@ def createEmployee(request):
     Employee.objects.create(name=name,age=age,email=email,phone_number=ph_number,address=address,salary=salary,role=role,team=team)
 
     return HttpResponse('ok')
-
-
-
-def home(request):
-    return render(request, 'main/index.html')
 
 # Create your views here.
