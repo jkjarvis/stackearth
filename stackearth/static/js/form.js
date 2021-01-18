@@ -14,6 +14,7 @@ function addEmp(){
         // return false;
         }
 
+<<<<<<< HEAD
 // function fetchAttendance(){
 //     console.log('done');
 //     var atdDate = {date: $('#atdDate').val(),}
@@ -31,4 +32,6 @@ function addEmp(){
 //         // return false;
 //         }
 
+=======
+>>>>>>> 4bd5376f81914e1af31f095dfe1fea5b93d6c97b
 
