@@ -46,10 +46,15 @@ def getAttendance(request):
         print(request.data)
         data = (request.data)
         date = data['date']
+        users = User.objects.all()
         attendance = Attendance.objects.filter(date=date)
-        print(attendance)
+        if len(attendance) == 0:
+            for i in users:
+                Attendance.objects.create(user=i,date=date)
+        
+        attendance = Attendance.objects.filter(date=date)
         serialized = attendanceSerializer(attendance, many=True)
-        return Response(json.dumps(serialized.data))
+        return Response(serialized.data)
         
     
 
@@ -101,6 +106,6 @@ def attendance(request):
     return HttpResponse('ok')
 
 def home(request):
-    return render(request, 'main/index.html')
+    return render(request, 'main/home.html')
 
 # Create your views here.

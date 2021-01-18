@@ -43,9 +43,19 @@ const csrftoken = getCookie('csrftoken');
       headers:{"X-CSRFToken": $crf_token},
       data:JSON.stringify(atdDate),
       
-      success: function(attendance){
-          console.log(attendance);
-          $('#newDate').html(attendance);
+      success: function(attendance){ 
+        var abc="";
+          attendance.forEach(element => {
+            // abc+='<div class="col"'+element.name+'<select>'+element.present?'<option selected value="Present">Present</option><option value="Absent">Absent</option>':'<option selected value="Absent">Absent</option><option value="Present">Present</option>'+'</select>'+'</li>';
+              abc+='<div class="row">';
+              abc+='<div class="col">'+element.name+'</div>';
+                abc+='<div class="col"><select>';
+                  abc+= element.present? '<option selected value="present">Present</option><option value="absent">Absent</option>': '<option selected value="absent">Absent</option><option value="present">Present</option>'
+                  abc+='</select>'+'</div>';
+                abc+='</div>';
+            });
+          
+          $('#newDate').html(abc);
           }
           
       });
