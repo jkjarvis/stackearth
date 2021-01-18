@@ -13,3 +13,22 @@ function addEmp(){
       });
         // return false;
         }
+
+// function fetchAttendance(){
+//     console.log('done');
+//     var atdDate = {date: $('#atdDate').val(),}
+//     $.ajax({
+//       type: 'POST',
+//       url: 'http://127.0.0.1:8000/getAttendance',
+//       dataType: 'json',
+//       data:JSON.stringify(atdDate),
+      
+//       success: function(data1){
+//           console.log("mofu");
+//           console.log(data1);}
+          
+//       });
+//         // return false;
+//         }
+
+
