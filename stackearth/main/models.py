@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save,pre_save
+from django.dispatch import receiver
 
 
 class Team(models.Model):
@@ -47,11 +49,16 @@ class Employee(models.Model):
 
 class Attendance(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
-    date = models.DateTimeField(auto_now_add=True)
+    name = models.CharField(max_length=200,blank=True)
+    date = models.DateField()
     present = models.BooleanField(default=True)
 
     def __str__(self):
         return str(self.user)
+
+@receiver(pre_save, sender=Attendance)
+def add_name(sender, instance, **kwargs):
+    instance.name = instance.user.first_name
 
 
 class Leave(models.Model):

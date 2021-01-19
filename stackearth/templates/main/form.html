@@ -14,18 +14,53 @@
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;800&display=swap" rel="stylesheet">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script>
-    function fetchAttendance() {
-    console.log('date inputted');
-  $.ajax({
-    type: 'POST',
-    url: 'http://127.0.0.1:8000/getAttendance',
-    dataType: 'json',
-    data:{
-          date : $('#atdDate').val(),
-          },
-    })
+    function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
 }
+const csrftoken = getCookie('csrftoken');
+    function fetchAttendance(){
+    console.log('done');
+    var $crf_token = csrftoken;
+    var atdDate = {date: $('#atdDate').val(),}
+    $.ajax({
+      type: 'POST',
+      url: 'http://127.0.0.1:8000/getAttendance',
+      dataType: 'json',
+      contentType: "application/json; charset=utf-8",
+      crossDomain: true,
+      headers:{"X-CSRFToken": $crf_token},
+      data:JSON.stringify(atdDate),
       
+      success: function(attendance){ 
+        var abc="";
+          attendance.forEach(element => {
+            // abc+='<div class="col"'+element.name+'<select>'+element.present?'<option selected value="Present">Present</option><option value="Absent">Absent</option>':'<option selected value="Absent">Absent</option><option value="Present">Present</option>'+'</select>'+'</li>';
+              abc+='<div class="row">';
+              abc+='<div class="col">'+element.name+'</div>';
+                abc+='<div class="col"><select>';
+                  abc+= element.present? '<option selected value="present">Present</option><option value="absent">Absent</option>': '<option selected value="absent">Absent</option><option value="present">Present</option>'
+                  abc+='</select>'+'</div>';
+                abc+='</div>';
+            });
+          
+          $('#newDate').html(abc);
+          }
+          
+      });
+        // return false;
+        }
   </script>
 </head>
 
@@ -106,13 +141,9 @@
             <!-- <button id="post" class="btn btn-primary" name="post_form" onclick="submitArticle();">POST</button> -->
           </fieldset>
           <!-- </form> -->
-          
-          <div class="select">
+          <div id='newDate'></div>
             <input type="date" id='atdDate' onchange="fetchAttendance();">
-            <br>
-          
-            <button type="submit" class="btn btn-success btn-block" name="submitform">SUBMIT</button>
-            </div>
+                        
         </div>
       </div>
     </div>
