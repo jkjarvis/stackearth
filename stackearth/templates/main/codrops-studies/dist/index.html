@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - Codrops studies</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+  <link rel="stylesheet" href="./style.css">
+  <script type="text/javascript" src="js/geodata-jsr-class.js"></script>
+
+</head>
+
+<body>  
+  <!-- <div class="container"> -->
+      <h1>Employee Information Form</h1>
+      <h3>Personal Information</h3>
+    <!-- </div> -->
+  <!-- partial:index.partial.html -->
+  <div class="container">
+
+    <span class="input">
+      <input type="text" class="input__field" id="input-1" />
+      <label for="input-1" class="input__label">
+        <span class="input__label-content">First Name</span>
+      </label>
+    </span>
+
+    <span class="input">
+      <input type="text" class="input__field" id="input-2" />
+      <label for="input-2" class="input__label">
+        <span class="input__label-content">Last Name</span>
+      </label>
+    </span>
+
+    <span class="input">
+      <input type="text" class="input__field" id="input-3" />
+      <label for="input-3" class="input__label">
+        <span class="input__label-content">Street Address Line 1</span>
+      </label>
+    </span>
+
+    <span class="input">
+      <input type="text" class="input__field" id="input-4" />
+      <label for="input-4" class="input__label">
+        <span class="input__label-content">Street Address Line 2</span>
+      </label>
+    </span>
+
+    <span class="input">
+      <label for="continent">
+        <span class="input__label-content">Continent:</span>
+      </label>
+      <select for="input-5" name="continent" id="continent" onchange="getplaces(this.value,'country');">
+        <option value=""></option>
+      </select>
+    </span>
+
+    <span class="input">
+      <label for="country">
+        <span class="input__label-content">Country:</span>
+      </label>
+      <select name="country" id="country" onchange="getplaces(this.value,'province');">
+        <option value=""></option>
+      </select>
+    </span>
+
+    <span class="input">
+      <label for="province">
+        <span class="input__label-content">State / Provice:</span>
+      </label>
+      <select name="province" id="province" onchange="getplaces(this.value,'region')">
+        <option value=""></option>
+      </select>
+    </span>
+
+    <span class="input">
+      <label for="region">
+        <span class="input__label-content">County / Region:</span>
+      </label>
+      <select name="region" id="region" onchange="getplaces(this.value,'city')">
+        <option value=""></option>
+      </select>
+    </span>
+
+    <span class="input">
+      <label for="region">
+        <span class="input__label-content">City:</span>
+      </label>
+      <select name="city" id="city">
+        <option value=""></option>
+      </select>
+    </span>
+
+    <span class="input">
+      <input type="text" class="input__field" id="input-5" />
+      <label for="input-5" class="input__label">
+        <span class="input__label-content">Postal / ZIP Code</span>
+      </label>
+    </span>
+
+    <span class="input">
+      <input type="tel" class="input__field" id="input-6" />
+      <label for="input-6" class="input__label">
+        <span class="input__label-content">Phone number</span>
+      </label>
+    </span>
+
+    <span class="input">
+      <input type="tel" class="input__field" id="input-7" />
+      <label for="input-7" class="input__label">
+        <span class="input__label-content">Alternate phone number</span>
+      </label>
+    </span>
+
+    <span class="input">
+      <input type="email" class="input__field" id="input-8" />
+      <label for="input-8" class="input__label">
+        <span class="input__label-content">E-mail address</span>
+      </label>
+    </span>
+
+    <span id="dobin" class="input">
+      <label for="dob">
+        <span class="input__label-content">Date of birth</span>
+      </label>
+      <input type="date" name="dob" id="dob">
+        <option value=""></option>
+      </select>
+    </span>
+
+    <button id="send-button" type="button">Send</button>
+
+  </div>
+
+  <!-- partial -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
+  <script src="./script.js"></script>
+
+</body>
+
+</html>
