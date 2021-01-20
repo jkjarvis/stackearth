@@ -49,7 +49,7 @@ const csrftoken = getCookie('csrftoken');
             // abc+='<div class="col"'+element.name+'<select>'+element.present?'<option selected value="Present">Present</option><option value="Absent">Absent</option>':'<option selected value="Absent">Absent</option><option value="Present">Present</option>'+'</select>'+'</li>';
               abc+='<div class="row">';
               abc+='<div class="col">'+element.name+'</div>';
-                abc+='<div class="col"><select>';
+                abc+='<div class="col"><select id="'+element.name+'" onchange="saveAttendance('+element.user+',$(\'#'+element.name+'\').val());">';
                   abc+= element.present? '<option selected value="present">Present</option><option value="absent">Absent</option>': '<option selected value="absent">Absent</option><option value="present">Present</option>'
                   abc+='</select>'+'</div>';
                 abc+='</div>';
@@ -61,6 +61,73 @@ const csrftoken = getCookie('csrftoken');
       });
         // return false;
         }
+      
+    function saveAttendance(user,attendance){
+      console.log(user);
+      console.log(name);
+      date = $('#atdDate').val()
+      var $crf_token = csrftoken;
+      data = {
+        user: user,
+        status: attendance,
+        date : date,
+      }
+
+      $.ajax({
+        type: 'POST',
+        url: 'http://127.0.0.1:8000/saveAttendance',
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        crossDomain: true,
+        headers:{"X-CSRFToken": $crf_token},
+        data: JSON.stringify(data),
+      })
+    }
+
+    function percentAttendance(){
+      var date = {date : $('#atdPercent').val() };
+      var $crf_token = csrftoken;
+      $.ajax({
+        type: 'POST',
+        url: 'http://127.0.0.1:8000/attendancePercent',
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        crossDomain: true,
+        headers:{"X-CSRFToken": $crf_token},
+        data: JSON.stringify(date),
+      })
+    }
+
+     async function currentUser(){
+      var $crf_token = csrftoken;
+      $.ajax({
+        type: 'POST',
+        url: 'http://127.0.0.1:8000/currentuser',
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        crossDomain: true,
+        headers:{"X-CSRFToken": $crf_token},
+        success: await function(user){
+          return new Promise((resolve) => {user['id'];})
+        }
+      })
+    }
+
+    async function leaveApplication(){
+      user = await currentUser();
+      var data = {user1 : user,from : $('#leaveFrom').val(),till: $('#leaveTill').val(),reason: $('#leaveReason').val()}
+      var $crf_token = csrftoken;
+      
+      $.ajax({
+        type: 'POST',
+        url: 'http://127.0.0.1:8000/leave',
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        crossDomain: true,
+        headers:{"X-CSRFToken": $crf_token},
+        data: JSON.stringify(data),
+      })
+    }
   </script>
 </head>
 
@@ -143,6 +210,18 @@ const csrftoken = getCookie('csrftoken');
           <!-- </form> -->
           <div id='newDate'></div>
             <input type="date" id='atdDate' onchange="fetchAttendance();">
+            <br>
+            <h3>attendance %</h3>
+            <input type="date" id='atdPercent' onchange="percentAttendance();">
+            <br>
+
+            <div>
+              <h3>Leave</h3><br>
+              From<input type="date" id='leaveFrom'><br>
+              Till<input type="date" id='leaveTill'><br>
+              Reason<textarea id="leaveReason"></textarea><br>
+              <button type="submit" onclick="leaveApplication();">Submit Leave Request</button>
+            </div>
                         
         </div>
       </div>

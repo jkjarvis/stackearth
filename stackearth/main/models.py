@@ -63,7 +63,7 @@ def add_name(sender, instance, **kwargs):
 
 class Leave(models.Model):
     applicant = models.ForeignKey(User,on_delete=models.CASCADE)
-    from_date = models.DateTimeField(auto_now_add=True)
+    from_date = models.DateTimeField()
     till_date = models.DateTimeField()
     reason = models.TextField(max_length=300)
     confirmed = models.BooleanField(default=False)

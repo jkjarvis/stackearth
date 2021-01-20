@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Employee, Address, Team, Role, Attendance, Leave, Loan, Bonus
-from .serializers import employeeSerializer, addressSerializer, roleSerializer, teamSerializer, attendanceSerializer,leaveSerializer,loanSerializer,bonusSerializer
+from .serializers import UserSerializer,employeeSerializer, addressSerializer, roleSerializer, teamSerializer, attendanceSerializer,leaveSerializer,loanSerializer,bonusSerializer
 import json
 from django.views.decorators.csrf import csrf_exempt
 from .models import Employee,Address
@@ -13,8 +13,17 @@ from django.core import serializers
 from django.utils.decorators import method_decorator
 from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
+from django.db.models import Count, Case, When
 
 
+
+def home(request):
+    return render(request, 'main/home.html')
+
+@api_view(['GET','POST'])
+def current_user(request):
+    serializer = UserSerializer(request.user)
+    return Response(serializer.data)
 
 
 class Get_employees_List(APIView):
@@ -55,12 +64,7 @@ def getAttendance(request):
         attendance = Attendance.objects.filter(date=date)
         serialized = attendanceSerializer(attendance, many=True)
         return Response(serialized.data)
-        
-    
 
-
-def homepage(request):
-    return render(request, 'main/index.html')
 
 @csrf_exempt
 def showForm(request):
@@ -97,15 +101,48 @@ def createEmployee(request):
     return HttpResponse('ok')
 
 
-@csrf_exempt
-def attendance(request):
+def saveAttendance(request):
     data = json.load(request)
-    print(data)
-    date = datetime.now()
-    status = data['status']
+    Present = False
+    if data['status'] == 'present':
+        Present= True
+    user = Attendance.objects.get(user=data['user'],date=data['date'])
+    user.present = Present
+    user.save()
+    print(Present)
     return HttpResponse('ok')
 
-def home(request):
-    return render(request, 'main/home.html')
+
+def attendancePercent(request):
+    data = json.load(request)
+    user=2
+    thirty_one = ['01','03','05','07','08','10','12']
+    thirty = ['04','06','09','11']
+    exception = ['02']
+    date = data['date']
+    gte = date[:7]+'-01'
+    
+    if date[5:7] in thirty_one:
+        lte = date[:7]+'-31'
+    elif date[5:7] in thirty:
+        lte = date[5:7]+'-30'
+    else:
+        lte = date[5:7]+'-28'
+    
+    percentage = Attendance.objects.filter(user=user,date__range=[gte, lte]).aggregate(present=Count(Case(When(present=True, then=1))))
+    if date[5:7] in thirty_one:
+        percentage = (percentage['present']/31)*100
+    elif date[5:7] in thirty:
+        percentage = (percentage['present']/30)*100
+    else:
+        percentage = (percentage['present']/28)*100
+    print(percentage)
+    return HttpResponse('ok')
+
+def leave(request):
+    data = json.load(request)
+    print(data)
+    return HttpResponse('ok')
+
 
 # Create your views here.
