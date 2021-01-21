@@ -9,7 +9,7 @@ class Team(models.Model):
     current_members = models.IntegerField(default=0)
 
     def __str__(self):
-        return team_name
+        return self.team_name
 
 
 class Role(models.Model):
@@ -69,7 +69,7 @@ class Leave(models.Model):
     confirmed = models.BooleanField(default=False)
 
     def __str__(self):
-        return str(self.user)
+        return str(self.applicant)
 
 
 class Loan(models.Model):

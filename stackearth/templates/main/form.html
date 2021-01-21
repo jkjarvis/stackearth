@@ -9,11 +9,27 @@
   <!-- <script src="http://code.jquery.com/jquery-1.11.1.min.js" integrity="sha256-VAvG3sHdS5LqTT+5A/aeq/bZGa/Uj04xKxY8KM/w9EE=" crossorigin="anonymous"></script> -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
-  <script src="{% static "js/form.js" %}" charset="utf-8"></script>
+  <script src="{% static 'js/form.js' %}" charset="utf-8"></script>
   <link rel="stylesheet" href="topic.css">
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;800&display=swap" rel="stylesheet">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script>
+    function addEmp(){
+  var empdata = {firstName:$('#fname').val(),lastName: $('#lname').val(),dob:$('#dob').val(),email:$('#useremail').val(),phone:$('#phone_number').val(),address:$('#address').val(),salary:$('#salary').val(),role:$('#role').val(),team:$('#team').val(),house_number:$('#house_number').val(),street:$('#street').val(),city:$('#city').val(),state:$('#state').val(),pincode:$('#pincode').val()}
+    $.ajax({
+      type: 'POST',
+      url: 'http://127.0.0.1:8000/createEmployee',
+      dataType: 'json',
+      data:JSON.stringify(empdata),
+      
+      success: function(){
+          console.log("mofu");
+          console.log(data);}
+          
+      });
+        // return false;
+        }
+        
     function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -113,10 +129,9 @@ const csrftoken = getCookie('csrftoken');
       })
     }
 
-    async function leaveApplication(){
-      user = await currentUser();
-      var data = {user1 : user,from : $('#leaveFrom').val(),till: $('#leaveTill').val(),reason: $('#leaveReason').val()}
-      var $crf_token = csrftoken;
+    function leaveApplication(){
+      token = sessionStorage.getItem('token');
+      var data = {from : $('#leaveFrom').val(),till: $('#leaveTill').val(),reason: $('#leaveReason').val()}
       
       $.ajax({
         type: 'POST',
@@ -124,9 +139,51 @@ const csrftoken = getCookie('csrftoken');
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         crossDomain: true,
-        headers:{"X-CSRFToken": $crf_token},
+        headers:{Authorization: 'token '+token},
         data: JSON.stringify(data),
+        success : function(response){
+          response = JSON.parse(response);
+          alert(response['message']);
+        }
       })
+    }
+
+    function login(){
+      var data = {username : $('#username').val(),password: $('#password').val()}
+      console.log('login');
+      $.ajax({
+        type: 'POST',
+        url: 'http://127.0.0.1:8000/login',
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        crossDomain: true,
+        data: JSON.stringify(data),
+        success: function(response){
+          console.log(response);
+          response = JSON.parse(response);
+          alert(response['message']);
+          if(response['status'] == 200){
+            const loginToken = response['token'];
+            sessionStorage.setItem('token',loginToken);
+          }
+        }
+      })
+    }
+
+    function getUser(){
+      var token = sessionStorage.getItem('token');
+      $.ajax({
+        type: 'POST',
+        url: 'http://127.0.0.1:8000/getUser',
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        crossDomain: true,
+        headers : {Authorization: 'token '+token},
+        success: function(user){
+          user = JSON.parse(user)
+          alert(user['user']);
+        }
+      });
     }
   </script>
 </head>
@@ -149,8 +206,10 @@ const csrftoken = getCookie('csrftoken');
           <!-- <form method="post" action=""> -->
           <fieldset>
             <p class="info">Fill in employee details:</p class="info">
-            <span class="info">Emp name:</span>
-            <input type="text" class="tbox1 field-style" id="uname" placeholder="Lamar"><br>Remaining: <b><span class="remtext1" style="color: #1d91d1;"></span></b><br><br>
+            <span class="info">Emp first name:</span>
+            <input type="text" class="tbox1 field-style" id="fname" placeholder="Lamar"><br>Remaining: <b><span class="remtext1" style="color: #1d91d1;"></span></b><br><br>
+            <span class="info">Emp last name:</span>
+            <input type="text" class="tbox1 field-style" id="lname" placeholder="Lamar"><br>Remaining: <b><span class="remtext1" style="color: #1d91d1;"></span></b><br><br>
             <span class="info">Date Of Birth:</span>
             <input type="date" class="tbox2 field-style" id="dob" placeholder="Davis"><br>Remaining: <b><span class="remtext2" style="color: #1d91d1;"></span></b><br><br>
             <span class="info">E-mail:</span>
@@ -222,6 +281,18 @@ const csrftoken = getCookie('csrftoken');
               Reason<textarea id="leaveReason"></textarea><br>
               <button type="submit" onclick="leaveApplication();">Submit Leave Request</button>
             </div>
+
+            <div>
+              Username: <input type="text" id="username">
+              Password: <input type="password" id="password">
+              <button type="submit" onclick="login();">Login</button>
+            </div>
+
+            <div class="user">
+              <button type="button" onclick="getUser();">Click</button>
+            </div>
+
+            
                         
         </div>
       </div>
