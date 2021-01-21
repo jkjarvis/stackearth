@@ -20,6 +20,9 @@ from django.db.models import Count, Case, When
 def home(request):
     return render(request, 'main/home.html')
 
+def emp(request):
+    return render(request, 'main/emp.html')
+
 @api_view(['GET','POST'])
 def current_user(request):
     serializer = UserSerializer(request.user)
