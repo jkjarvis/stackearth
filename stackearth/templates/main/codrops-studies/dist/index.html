@@ -14,8 +14,7 @@
 
 <body>  
   <!-- <div class="container"> -->
-      <h1>Employee Information Form</h1>
-      <h3>Personal Information</h3>
+      <h2>Employee Information Form</h2>
     <!-- </div> -->
   <!-- partial:index.partial.html -->
   <div class="container">
@@ -37,14 +36,14 @@
     <span class="input">
       <input type="text" class="input__field" id="input-3" />
       <label for="input-3" class="input__label">
-        <span class="input__label-content">Street Address Line 1</span>
+        <span class="input__label-content">House No.</span>
       </label>
     </span>
 
     <span class="input">
       <input type="text" class="input__field" id="input-4" />
       <label for="input-4" class="input__label">
-        <span class="input__label-content">Street Address Line 2</span>
+        <span class="input__label-content">Street</span>
       </label>
     </span>
 
@@ -93,39 +92,57 @@
       </select>
     </span>
 
-    <span class="input">
+    <span class="input" style="margin-top: 3rem;">
       <input type="text" class="input__field" id="input-5" />
       <label for="input-5" class="input__label">
-        <span class="input__label-content">Postal / ZIP Code</span>
+        <span class="input__label-content">ZIP Code</span>
       </label>
     </span>
 
     <span class="input">
       <input type="tel" class="input__field" id="input-6" />
       <label for="input-6" class="input__label">
-        <span class="input__label-content">Phone number</span>
+        <span class="input__label-content">Mobile</span>
       </label>
     </span>
 
     <span class="input">
       <input type="tel" class="input__field" id="input-7" />
       <label for="input-7" class="input__label">
-        <span class="input__label-content">Alternate phone number</span>
+        <span class="input__label-content">Alt. mob</span>
       </label>
     </span>
 
     <span class="input">
       <input type="email" class="input__field" id="input-8" />
       <label for="input-8" class="input__label">
-        <span class="input__label-content">E-mail address</span>
+        <span class="input__label-content">E-mail</span>
       </label>
     </span>
 
-    <span id="dobin" class="input">
-      <label for="dob">
+    <span id="dobin" class="input" style="margin-top: 2.4rem;">
+      <!-- <label for="dob">
         <span class="input__label-content">Date of birth</span>
+      </label> -->
+      <input type="date" name="dob" id="dob"  style="width: 60%; height: 50%;">
+        <option value=""></option>
+      </select>
+    </span>
+
+    <span class="input">
+      <label for="role">
+        <span class="input__label-content">Role:</span>
       </label>
-      <input type="date" name="dob" id="dob">
+      <select name="role" id="role">
+        <option value=""></option>
+      </select>
+    </span>
+
+    <span class="input">
+      <label for="dept">
+        <span class="input__label-content">Department:</span>
+      </label>
+      <select name="dept" id="dept">
         <option value=""></option>
       </select>
     </span>
@@ -133,9 +150,9 @@
     <button id="send-button" type="button">Send</button>
 
   </div>
-
+  
   <!-- partial -->
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
   <script src="./script.js"></script>
 
 </body>
