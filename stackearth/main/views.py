@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from rest_framework.views import APIView
@@ -11,20 +11,50 @@ from .models import Employee,Address
 from datetime import date,datetime
 from django.core import serializers
 from django.utils.decorators import method_decorator
-from rest_framework.decorators import api_view, renderer_classes
+from rest_framework.decorators import api_view, renderer_classes, permission_classes
 from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
 from django.db.models import Count, Case, When
-
+from django.core.exceptions import ObjectDoesNotExist
+from random import randint
+from django.core.mail import send_mail
+from django.contrib.auth import authenticate, login
+import requests
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 
 
 def home(request):
     return render(request, 'main/home.html')
 
-@api_view(['GET','POST'])
-def current_user(request):
-    serializer = UserSerializer(request.user)
-    return Response(serializer.data)
+@csrf_exempt
+@api_view(('GET','POST',))
+@renderer_classes((TemplateHTMLRenderer, JSONRenderer))
+def login(request):
+    data = json.load(request)
+    username = data['username']
+    password = data['password']
+    url = 'http://127.0.0.1:8000/api-token-auth/'
+    data = {'username': username,'password': password}
+    user = authenticate(username=username,password=password)
+    if user != None:
+        r = requests.post(url,data=data)
+        response = r.json()
+        print(response)
+        print(r.status_code)
+        if r.status_code == 200:
+            return Response(json.dumps({'message': 'successfully logged in','token': response['token'],'status':r.status_code}))
+        else:
+            return Response(json.dumps({'message': 'login failed','status':r.status_code}))
+    else:
+        response = {'message': 'Username or Password incorrect'}
+        return Response(json.dumps(response))
 
+
+@api_view(('GET','POST',))
+@renderer_classes((TemplateHTMLRenderer, JSONRenderer))
+@permission_classes((IsAuthenticated,))
+def getUser(request):
+    return Response(json.dumps({'user' : request.user.username}))
 
 class Get_employees_List(APIView):
     def get(self, request):
@@ -73,8 +103,10 @@ def showForm(request):
 @csrf_exempt
 def createEmployee(request):
     data = json.load(request)
-    name = data['name']
-    age = data['dob']
+    print(data)
+    first_name = data['firstName']
+    last_name = data['lastName']
+    dob = data['dob']
     email = data['email']
     ph_number = data['phone']
     address = data['address']
@@ -88,17 +120,31 @@ def createEmployee(request):
     pincode = data['pincode']
 
     password = User.objects.make_random_password(length=10)
-    user = User.objects.create(username=name,email=email,first_name=name)
+    try:
+        User.objects.get(username=first_name)
+    except User.DoesNotExist:
+        username = first_name
+    else:
+        username = first_name + str(randint(0,10000))
+
+    user = User.objects.create(username=username,email=email,first_name=first_name,last_name=last_name)
     user.set_password(password)
     user.save()
 
     address = Address.objects.create(user=user,house_no=house_number,street=street,city=city,state=state,pincode=pincode)
 
 
+    role = Role.objects.get(role='developer')
+    team = Team.objects.get(team_name='backend')
+    Employee.objects.create(user=user,dob=dob,email=email,phone_number=ph_number,address=address,salary=salary,role=role,team=team)
 
-    Employee.objects.create(name=name,age=age,email=email,phone_number=ph_number,address=address,salary=salary,role=role,team=team)
+    send_mail('Reset your password',
+            'Reset your password by clicking on following link, username: '+user.username+' http://127.0.0.1:8000/password_reset/password_reset/',
+            'company@email.com',
+            [user.email])
 
     return HttpResponse('ok')
+
 
 
 def saveAttendance(request):
@@ -139,10 +185,18 @@ def attendancePercent(request):
     print(percentage)
     return HttpResponse('ok')
 
+@api_view(('GET','POST',))
+@renderer_classes((TemplateHTMLRenderer, JSONRenderer))
+@permission_classes((IsAuthenticated,))
 def leave(request):
     data = json.load(request)
     print(data)
-    return HttpResponse('ok')
+    fromDate = data['from']
+    tillDate = data['till']
+    reason = data['reason']
+    user = request.user
+    Leave.objects.create(applicant=user,from_date=fromDate,till_date=tillDate,reason=reason)
+    return Response(json.dumps({'message': 'Leave request submitted'}))
 
 
 # Create your views here.
