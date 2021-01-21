@@ -14,18 +14,19 @@ body {
 }
 
 select {
-  width: 100%;
+  width: 60%;
+  height: 50%;
 }
 
 .container {
   position: absolute;
-  width: 710px;
-  height: 5em;
-  left: 50%;
-  top: 80%;
-  bottom: 0%;
-  margin-left: -355px;
-  margin-top: -2.5em;
+  /* width: 710px; */
+  /* height: 5em; */
+  /* left: 50%; */
+  /* top: 80%; */
+  /* bottom: 0%; */
+  /* margin-left: 50%; */
+  /* margin-top: -2.5em; */
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -72,7 +73,9 @@ textarea {
   position: absolute;
   padding: 0 1em;
   margin: 1.2em 0;
-  width: 100%;
+  width: 60%;
+  /* overflow: hidden; */
+  white-space: nowrap;
   height: calc(100% - 2.4em);
   color: #12458D;
   font-weight: bold;
@@ -132,11 +135,13 @@ textarea {
 }
 
 #send-button {
-  width: 200px;
-  height: 60px;
+  height: 50px;
+  width: 100px;
+  margin-bottom: 50px;
+  margin-top: 50px;
   background-color: #2462B9;
   color: rgb(255, 255, 255);
-  border: 0;
+  border-radius: 5px;
   font-weight: bold;
   font-size: 70.25%;
   text-transform: uppercase;
