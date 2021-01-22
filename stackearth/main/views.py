@@ -17,7 +17,7 @@ from django.db.models import Count, Case, When
 from django.core.exceptions import ObjectDoesNotExist
 from random import randint
 from django.core.mail import send_mail
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login as auth_login
 import requests
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
@@ -26,9 +26,11 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 @authentication_classes([SessionAuthentication, BasicAuthentication])
 @permission_classes([IsAuthenticated])
 def home(request):
-    first_name = request.user.first_name
-    last_name = request.user.last_name
-    return render(request, 'main/home.html',{'first_name': first_name,'last_name':last_name})
+    user = request.user
+    first_name = user.first_name
+    last_name = user.last_name
+    token = request.session['token']
+    return render(request, 'main/home.html',{'first_name': first_name,'last_name':last_name,'token':token})
 
 def loginForm(request):
     return render(request, 'main/login.html')
@@ -39,26 +41,26 @@ def emp(request):
 
 @api_view(['GET','POST'])
 def current_user(request):
-    serializer = UserSerializer(request.user)
-    return Response(serializer.data)
-@csrf_exempt
-@api_view(('GET','POST',))
-@renderer_classes((TemplateHTMLRenderer, JSONRenderer))
+    admin_status = request.user.is_superuser
+    return Response(json.dumps({'admin':admin_status}))
+
+
 def login(request):
     username = request.POST['username']
     password = request.POST['password']
     user = authenticate(username=username,password=password)
+    url = 'http://127.0.0.1:8000/api-token-auth/'
+    data = {'username':username,'password':password}
     if user != None:
+        auth_login(request,user)
+        r = requests.post(url,data=data)
+        response = r.json()
+        request.session['token'] = response['token']
         return redirect('main:home')
     else:
         response = {'message': 'Username or Password incorrect'}
         return redirect('main:loginForm')
 
-@api_view(('GET','POST',))
-@renderer_classes((TemplateHTMLRenderer, JSONRenderer))
-@permission_classes((IsAuthenticated,))
-def getUser(request):
-    return Response(json.dumps({'user' : request.user.username}))
 
 class Get_employees_List(APIView):
     def get(self, request):
@@ -82,22 +84,24 @@ class Get_employees_List(APIView):
 #         return super(APIView,self).dispatch(*args, **kwargs)
 
 
-@csrf_exempt
+
 @api_view(('GET','POST',))
 @renderer_classes((TemplateHTMLRenderer, JSONRenderer))
+@permission_classes((IsAuthenticated,))
 def getAttendance(request):
-        print(request.data)
         data = (request.data)
         date = data['date']
-        users = User.objects.all()
-        attendance = Attendance.objects.filter(date=date)
-        if len(attendance) == 0:
-            for i in users:
-                Attendance.objects.create(user=i,date=date)
-        
-        attendance = Attendance.objects.filter(date=date)
-        serialized = attendanceSerializer(attendance, many=True)
-        return Response(serialized.data)
+        token = data['token']
+        if request.user.is_superuser:
+            users = User.objects.all()
+            attendance = Attendance.objects.filter(date=date)
+            if len(attendance) == 0:
+                for i in users:
+                    Attendance.objects.create(user=i,date=date)
+            
+            attendance = Attendance.objects.filter(date=date)
+            serialized = attendanceSerializer(attendance, many=True)
+            return Response(serialized.data)
 
 
 @csrf_exempt
@@ -150,7 +154,9 @@ def createEmployee(request):
     return HttpResponse('ok')
 
 
-
+@api_view(('GET','POST',))
+@renderer_classes((TemplateHTMLRenderer, JSONRenderer))
+@permission_classes((IsAuthenticated,))
 def saveAttendance(request):
     data = json.load(request)
     Present = False
@@ -159,13 +165,15 @@ def saveAttendance(request):
     user = Attendance.objects.get(user=data['user'],date=data['date'])
     user.present = Present
     user.save()
-    print(Present)
     return HttpResponse('ok')
 
 
-def attendancePercent(request):
+@api_view(('GET','POST',))
+@renderer_classes((TemplateHTMLRenderer, JSONRenderer))
+@permission_classes((IsAuthenticated,))
+def attendance_percent(request):
     data = json.load(request)
-    user=2
+    user = request.user
     thirty_one = ['01','03','05','07','08','10','12']
     thirty = ['04','06','09','11']
     exception = ['02']
@@ -179,15 +187,24 @@ def attendancePercent(request):
     else:
         lte = date[5:7]+'-28'
     
-    percentage = Attendance.objects.filter(user=user,date__range=[gte, lte]).aggregate(present=Count(Case(When(present=True, then=1))))
+    percentage = Attendance.objects.filter(user=user,date__range=[gte, date]).aggregate(present=Count(Case(When(present=True, then=1))))
     if date[5:7] in thirty_one:
         percentage = (percentage['present']/31)*100
     elif date[5:7] in thirty:
         percentage = (percentage['present']/30)*100
     else:
         percentage = (percentage['present']/28)*100
-    print(percentage)
-    return HttpResponse('ok')
+    try:
+        user = Attendance.objects.get(user=user,date=date)
+        present = user.present
+    except Attendance.DoesNotExist:
+        present = False
+        
+    if present:
+        status = 'present'
+    else:
+        status = 'absent'
+    return Response(json.dumps({'percentage':percentage,'status': status}))
 
 @api_view(('GET','POST',))
 @renderer_classes((TemplateHTMLRenderer, JSONRenderer))
@@ -202,5 +219,23 @@ def leave(request):
     Leave.objects.create(applicant=user,from_date=fromDate,till_date=tillDate,reason=reason)
     return Response(json.dumps({'message': 'Leave request submitted'}))
 
+
+@api_view(('GET','POST',))
+@renderer_classes((TemplateHTMLRenderer, JSONRenderer))
+@permission_classes((IsAuthenticated,))
+def leave_requests(request):
+    leaves = Leave.objects.all()
+    serialized = leaveSerializer(leave, many=True)
+    return Response(serialized.data)
+
+
+@api_view(('GET','POST',))
+@renderer_classes((TemplateHTMLRenderer, JSONRenderer))
+@permission_classes((IsAuthenticated,))
+def leave_status(request):
+    leaves = Leave.objects.filter(applicant=request.user)
+    print(leaves)
+    serialized = leaveSerializer(leaves, many=True)
+    return Response(serialized.data)
 
 # Create your views here.
