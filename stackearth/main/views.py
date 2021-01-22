@@ -26,15 +26,9 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 def home(request):
     return render(request, 'main/home.html')
 
-<<<<<<< HEAD
 def emp(request):
     return render(request, 'main/emp.html')
 
-@api_view(['GET','POST'])
-def current_user(request):
-    serializer = UserSerializer(request.user)
-    return Response(serializer.data)
-=======
 @csrf_exempt
 @api_view(('GET','POST',))
 @renderer_classes((TemplateHTMLRenderer, JSONRenderer))
@@ -58,7 +52,6 @@ def login(request):
         response = {'message': 'Username or Password incorrect'}
         return Response(json.dumps(response))
 
->>>>>>> 9a7685059cd3be07bcd6ee8fd0b9065e2d973dc8
 
 @api_view(('GET','POST',))
 @renderer_classes((TemplateHTMLRenderer, JSONRenderer))
