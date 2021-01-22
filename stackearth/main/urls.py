@@ -5,7 +5,8 @@ from django.contrib.auth import views as auth_views
 from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns = [
-    path('', views.home,name='home'),
+    path('home', views.home,name='home'),
+    path('',views.loginForm,name='loginForm'),
     path('api-token-auth/', obtain_auth_token, name='api_token_auth'), 
     path('login',views.login),
     path('getUser',views.getUser),

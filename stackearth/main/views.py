@@ -11,7 +11,7 @@ from .models import Employee,Address
 from datetime import date,datetime
 from django.core import serializers
 from django.utils.decorators import method_decorator
-from rest_framework.decorators import api_view, renderer_classes, permission_classes
+from rest_framework.decorators import api_view, renderer_classes, permission_classes,authentication_classes
 from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
 from django.db.models import Count, Case, When
 from django.core.exceptions import ObjectDoesNotExist
@@ -23,35 +23,36 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 
 
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
 def home(request):
-    return render(request, 'main/home.html')
+    first_name = request.user.first_name
+    last_name = request.user.last_name
+    return render(request, 'main/home.html',{'first_name': first_name,'last_name':last_name})
+
+def loginForm(request):
+    return render(request, 'main/login.html')
+
 
 def emp(request):
     return render(request, 'main/emp.html')
 
+@api_view(['GET','POST'])
+def current_user(request):
+    serializer = UserSerializer(request.user)
+    return Response(serializer.data)
 @csrf_exempt
 @api_view(('GET','POST',))
 @renderer_classes((TemplateHTMLRenderer, JSONRenderer))
 def login(request):
-    data = json.load(request)
-    username = data['username']
-    password = data['password']
-    url = 'http://127.0.0.1:8000/api-token-auth/'
-    data = {'username': username,'password': password}
+    username = request.POST['username']
+    password = request.POST['password']
     user = authenticate(username=username,password=password)
     if user != None:
-        r = requests.post(url,data=data)
-        response = r.json()
-        print(response)
-        print(r.status_code)
-        if r.status_code == 200:
-            return Response(json.dumps({'message': 'successfully logged in','token': response['token'],'status':r.status_code}))
-        else:
-            return Response(json.dumps({'message': 'login failed','status':r.status_code}))
+        return redirect('main:home')
     else:
         response = {'message': 'Username or Password incorrect'}
-        return Response(json.dumps(response))
-
+        return redirect('main:loginForm')
 
 @api_view(('GET','POST',))
 @renderer_classes((TemplateHTMLRenderer, JSONRenderer))
