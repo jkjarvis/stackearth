@@ -34,6 +34,14 @@ def loginForm(request):
     return render(request, 'main/login.html')
 
 
+def emp(request):
+    return render(request, 'main/emp.html')
+
+@api_view(['GET','POST'])
+def current_user(request):
+    serializer = UserSerializer(request.user)
+    return Response(serializer.data)
+@csrf_exempt
 @api_view(('GET','POST',))
 @renderer_classes((TemplateHTMLRenderer, JSONRenderer))
 def login(request):
@@ -45,7 +53,6 @@ def login(request):
     else:
         response = {'message': 'Username or Password incorrect'}
         return redirect('main:loginForm')
-
 
 @api_view(('GET','POST',))
 @renderer_classes((TemplateHTMLRenderer, JSONRenderer))

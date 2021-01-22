@@ -1,11 +1,15 @@
-{% extends 'main/base.html' %}
-
-{% block content %}  
+{% extends "./base.html" %}
+{% load static %}
+  {% block title %}Employee Info | HRM{%endblock%}
+  {% block content %}
+  <link rel="stylesheet" href="{% static "css/emp/normalize.min.css" %}">
+  <link rel="stylesheet" href="{% static "css/emp/style.css" %}">
+  <script type="text/javascript" src="{% static "js/emp/geodata-jsr-class.js" %}"></script>
   <!-- <div class="container"> -->
       <h2>Employee Information Form</h2>
     <!-- </div> -->
   <!-- partial:index.partial.html -->
-  <div class="container">
+  <div class="containerx">
 
     <span class="input">
       <input type="text" class="input__field" id="input-1" />
@@ -140,7 +144,12 @@
   </div>
   
   <!-- partial -->
+<<<<<<< HEAD:stackearth/templates/main/codrops-studies/dist/index.html
   <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
   <script src="./script.js"></script>
+=======
+  <script src="{% static "js/emp/jquery.min.js" %}"></script>
+  <script src="{% static "js/emp/script.js" %}"></script>
+>>>>>>> 9e198d5068076c1d8a0aa41caa97aeccc80d0f4a:stackearth/templates/main/emp.html
 
 {% endblock %}
