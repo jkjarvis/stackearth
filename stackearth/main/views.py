@@ -74,22 +74,6 @@ class Get_employees_List(APIView):
         return Response(serialized.data)
 
 
-# @method_decorator(csrf_exempt, name='dispatch')
-# @method_decorator(api_view(['POST']),name='post')
-# @method_decorator(renderer_classes([TemplateHTMLRenderer, JSONRenderer]),name='post')
-# class Get_attendance_List(APIView):
-#     def post(self,request):
-#         data = json.load(request)
-#         date = data['date']
-#         attendance = Attendance.objects.filter(date=date)
-#         serialized = attendanceSerializer(attendance, many=True)
-#         return Response(serialized.data)
-        
-#     def dispatch(self, *args, **kwargs):
-#         return super(APIView,self).dispatch(*args, **kwargs)
-
-
-
 @api_view(('GET','POST',))
 @renderer_classes((TemplateHTMLRenderer, JSONRenderer))
 @permission_classes((IsAuthenticated,))
@@ -110,13 +94,8 @@ def getAttendance(request):
 
 
 @csrf_exempt
-def showForm(request):
-    return render(request,'main/form.html')
-
-@csrf_exempt
 def createEmployee(request):
     data = json.load(request)
-    print(data)
     first_name = data['firstName']
     last_name = data['lastName']
     dob = data['dob']
@@ -261,4 +240,40 @@ def leave_approve(request):
     else:
         return HttpResponse('not allowed')
 
-# Create your views here.
+@api_view(('GET','POST',))
+@renderer_classes((TemplateHTMLRenderer, JSONRenderer))
+@permission_classes((IsAuthenticated,))
+def save_team(request):
+    if request.user.is_superuser:
+        data = json.load(request)
+        print(data)
+        team_name = data['team']
+        Team.objects.create(team_name=team_name)
+        return HttpResponse('ok')
+    else:
+        return HttpResponse('Not allowed')
+
+@api_view(('GET','POST',))
+@renderer_classes((TemplateHTMLRenderer, JSONRenderer))
+@permission_classes((IsAuthenticated,))
+def save_role(request):
+    if request.user.is_superuser:
+        data = json.load(request)
+        team_name = data['team']
+        role = data['role']
+        team = Team.objects.get(team_name=team_name)
+        Role.objects.create(role=role,team=team)
+        return HttpResponse('ok')
+    else:
+        return HttpResponse('Not allowed')
+
+
+@api_view(('GET','POST',))
+@renderer_classes((TemplateHTMLRenderer, JSONRenderer))
+@permission_classes((IsAuthenticated,))
+def get_teams(request):
+    teams = Team.objects.all()
+    serialized = teamSerializer(teams, many=True)
+    return Response(serialized.data)
+
+

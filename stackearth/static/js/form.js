@@ -1,5 +1,5 @@
-var token = 'Token '+sessionStorage.getItem('token');
-var admin = sessionStorage.getItem('admin');
+var token = 'Token '+localStorage.getItem('token');
+var admin = localStorage.getItem('admin');
 function addEmp(){
   var empdata = {firstName:$('#fname').val(),lastName: $('#lname').val(),dob:$('#dob').val(),email:$('#useremail').val(),phone:$('#phone_number').val(),address:$('#address').val(),salary:$('#salary').val(),role:$('#role').val(),team:$('#team').val(),house_number:$('#house_number').val(),street:$('#street').val(),city:$('#city').val(),state:$('#state').val(),pincode:$('#pincode').val()}
     $.ajax({
@@ -244,6 +244,54 @@ const csrftoken = getCookie('csrftoken');
       $.ajax({
         type: 'POST',
         url: 'http://127.0.0.1:8000/leave_approve',
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        crossDomain: true,
+        headers : {Authorization: token},
+        data: JSON.stringify(data),
+      });
+    }
+
+    function getTeams(){
+      console.log('reached');
+      $.ajax({
+        type: 'POST',
+        url: 'http://127.0.0.1:8000/getTeams',
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        crossDomain: true,
+        headers : {Authorization: token},
+        success: function(data){
+          var abc="";
+          console.log(data);
+          data.forEach(element => {
+            abc+="<select id='teamrole'>";
+            abc+="<option value="+element.team_name+">"+element.team_name+"</option>";
+            abc+="</select>";
+          })
+          $('#roleTeam').html(abc);
+        }
+      });
+    }
+
+    function saveTeam(team){
+      var data = {'team' : $('#teamname').val()};
+      $.ajax({
+        type: 'POST',
+        url: 'http://127.0.0.1:8000/saveTeam',
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        crossDomain: true,
+        headers : {Authorization: token},
+        data: JSON.stringify(data),
+      });
+    }
+
+    function saveRole(role){
+      var data = {'role': $('#rolename').val(),'team':$('teamrole').val()};
+      $.ajax({
+        type: 'POST',
+        url: 'http://127.0.0.1:8000/saveRole',
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         crossDomain: true,

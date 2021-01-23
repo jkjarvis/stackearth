@@ -21,35 +21,33 @@
     <script src="{% static 'js/form.js' %}"></script>
     <script>
       function getToken(){
-        var approveLeave = document.getElementById('ApproveLeaveRequests');
-        approveLeave.style.display = 'none';
-        sessionStorage.setItem('token','{{ token }}');
-        var token = sessionStorage.getItem('token');
-        console.log(token);
+        if(localStorage.getItem('token') == null){
+            localStorage.setItem('token','{{ token }}');
+            var token = localStorage.getItem('token');
+            console.log(token);
 
-        $.ajax({
-        type: 'POST',
-        url: 'http://127.0.0.1:8000/currentuser',
-        dataType: 'json',
-        contentType: "application/json; charset=utf-8",
-        crossDomain: true,
-        headers : {Authorization: 'token '+token},
-        success: function(user){
-          user = JSON.parse(user);
-          var admin = user['admin'];
-          sessionStorage.setItem('admin',admin);
-          if(admin == true){
-            document.getElementById('ApproveLeaveRequests').style.display = 'block';
-          }
-          console.log(admin);
+            $.ajax({
+            type: 'POST',
+            url: 'http://127.0.0.1:8000/currentuser',
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            crossDomain: true,
+            headers : {Authorization: 'token '+token},
+            success: function(user){
+              user = JSON.parse(user);
+              var admin = user['admin'];
+              localStorage.setItem('admin',admin);
+              if(admin == true){
+                document.getElementById('ApproveLeaveRequests').style.display = 'block';
+              }
+              console.log(admin);
+            }
+          });
         }
-      });
       }
-    </script>
-    <script>
-      function show(name){
-        var x = document.getElementById(name);
-        x.style.display = 'block';
+
+      function deleteToken(){
+        localStorage.removeItem('token');
       }
     </script>
   </head>
@@ -59,13 +57,8 @@
         <ul class="nav">
           <li class="nav-item nav-profile border-bottom">
             <a href="#" class="nav-link flex-column">
-              <div class="nav-profile-image">
-                <img src="{% static "images/dashboard/hr/hr.png" %}" alt="profile">
-                <!--change to offline or busy as needed-->
-              </div>
               <div class="nav-profile-text d-flex ml-0 mb-3 flex-column">
                 <span class="font-weight-semibold mb-1 mt-2 text-center">{{ first_name }} {{ last_name }}</span>
-                <span class="text-dark font-weight-bold text-center">HR</span>
               </div>
             </a>
           </li>
@@ -86,35 +79,42 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="{% url 'main:attendancePage' %}" aria-expanded="false" aria-controls="apps">
+            <a class="nav-link"  href="{% url 'main:roleTeamPage' %}" aria-expanded="false" aria-controls="apps">
+              <i class="mdi mdi-monitor-dashboard menu-icon"></i>
+              <span class="menu-title" >Add Role Or Team</span>
+              <i class="menu-arrow"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link"  href="{% url 'main:attendancePage' %}" aria-expanded="false" aria-controls="apps">
               <i class="mdi mdi-monitor-dashboard menu-icon"></i>
               <span class="menu-title">Attendance</span>
               <i class="menu-arrow"></i>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="{% url 'main:leaveRequestPage' %}" aria-expanded="false" aria-controls="page-layouts">
+            <a class="nav-link" href="{% url 'main:leaveRequestPage' %}" aria-expanded="false" aria-controls="page-layouts">
               <i class="mdi mdi-inbox menu-icon"></i>
               <span class="menu-title" >Leave Request</span>
               <i class="menu-arrow"></i>
             </a>
           </li>
           <li class="nav-item" id="ApproveLeaveRequests">
-            <a class="nav-link" data-toggle="collapse" href="{% url 'main:leaveApprovePage' %}" aria-expanded="false" aria-controls="page-layouts">
+            <a class="nav-link" href="{% url 'main:leaveApprovePage' %}" aria-expanded="false" aria-controls="page-layouts">
               <i class="mdi mdi-inbox menu-icon"></i>
               <span class="menu-title" >Approve Leave Requests</span>
               <i class="menu-arrow"></i>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="{% url 'main:leaveStatusPage' %}" aria-expanded="false" aria-controls="apps">
+            <a class="nav-link" href="{% url 'main:leaveStatusPage' %}" aria-expanded="false" aria-controls="apps">
               <i class="mdi mdi-monitor-dashboard menu-icon"></i>
               <span class="menu-title" >Leave Status</span>
               <i class="menu-arrow"></i>
             </a>
           </li>
           <li class="nav-item">
-            <a href="{% url 'main:logout' %}?next=/"><button class="btn btn-sm btn-danger">Logout</button></a>
+            <a href="{% url 'main:logout' %}?next=/"><button class="btn btn-sm btn-danger" onclick="deleteToken();">Logout</button></a>
           </li>
         
         </ul>

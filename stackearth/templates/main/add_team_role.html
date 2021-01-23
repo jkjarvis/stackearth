@@ -1,0 +1,15 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<div>
+     Team Name: <input type="text" id='teamname'><br>
+     <button type="button" onclick="saveTeam();">Save Team</button>
+
+</div>
+<div>
+    Role: <input type="text" id='rolename'><br>
+    <button onclick="getTeams();">Get teams</button>
+    <div id='roleTeam'></div>
+    <button type="button" onclick="saveRole();">Save Team</button>
+</div>
+{% endblock %}

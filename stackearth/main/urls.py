@@ -15,7 +15,6 @@ urlpatterns = [
     path('currentuser',views.current_user),
     # path('currentuser',views.current_user),
     path('employee', views.Get_employees_List.as_view()),
-    path('form',views.showForm),
     path('createEmployee',views.createEmployee,name='create_emp'),
     path('getAttendance',csrf_exempt(views.getAttendance),name='get_attendance'),
     path('saveAttendance',views.saveAttendance,name='save_attendance'),
@@ -29,4 +28,8 @@ urlpatterns = [
     path('leaveApprovePage',TemplateView.as_view(template_name="main/leaveApprove.html"),name='leaveApprovePage'),
     path('leaveRequestPage',TemplateView.as_view(template_name="main/leaveRequest.html"),name='leaveRequestPage'),
     path('leaveStatusPage',TemplateView.as_view(template_name="main/leaveStatus.html"),name='leaveStatusPage'),
+    path('roleTeamPage',TemplateView.as_view(template_name="main/add_team_role.html"),name='roleTeamPage'),    
+    path('saveTeam',views.save_team),
+    path('saveRole',views.save_role),
+    path('getTeams',views.get_teams),
 ]
