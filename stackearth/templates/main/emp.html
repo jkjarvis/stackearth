@@ -1,150 +1,202 @@
 {% extends "./base.html" %}
 {% load static %}
-  {% block title %}Employee Info | HRM{%endblock%}
-  {% block content %}
-  <link rel="stylesheet" href="{% static "css/emp/normalize.min.css" %}">
-  <link rel="stylesheet" href="{% static "css/emp/style.css" %}">
-  <script type="text/javascript" src="{% static "js/emp/geodata-jsr-class.js" %}"></script>
-  <!-- <div class="container"> -->
-      <h2>Employee Information Form</h2>
-    <!-- </div> -->
-  <!-- partial:index.partial.html -->
-  <div class="containerx">
+{% block title %}Employee Info | HRM{%endblock%}
+{% block content %}
+<link rel="stylesheet" href="{% static "css/emp/normalize.min.css" %}">
+<link rel="stylesheet" href="{% static "css/emp/style.css" %}">
+<script type="text/javascript" src="{% static "js/emp/geodata-jsr-class.js" %}"></script>
+<h2>Employee Information Form</h2>
+<!-- partial:index.partial.html -->
+<div class="container">
 
-    <span class="input">
-      <input type="text" class="input__field" id="input-1" />
-      <label for="input-1" class="input__label">
+  <div class="row">
+    <div class="col">
+      
         <span class="input__label-content">First Name</span>
-      </label>
-    </span>
+      <br>
+      <span class="input">
+        <input type="text" class="input__field" id="fname" />
 
-    <span class="input">
-      <input type="text" class="input__field" id="input-2" />
-      <label for="input-2" class="input__label">
+      </span>
+    </div>
+
+    <div class="col">
+      
         <span class="input__label-content">Last Name</span>
-      </label>
-    </span>
+      <br>
+      <span class="input">
+        <input type="text" class="input__field" id="lname" />
+      </span>
+    </div>
 
-    <span class="input">
-      <input type="text" class="input__field" id="input-3" />
-      <label for="input-3" class="input__label">
+  </div><br>
+
+  <div class="row">
+    <div class="col">
+      
         <span class="input__label-content">House No.</span>
-      </label>
-    </span>
+      <br>
+      <span class="input">
+        <input type="text" class="input__field" id="house_number" />
+      </span>
+    </div>
 
-    <span class="input">
-      <input type="text" class="input__field" id="input-4" />
-      <label for="input-4" class="input__label">
+    <div class="col">
+      
         <span class="input__label-content">Street</span>
-      </label>
-    </span>
+      <br>
+      <span class="input">
+        <input type="text" class="input__field" id="street" />
+      </span>
+    </div>
 
-    <span class="input">
-      <label for="continent">
-        <span class="input__label-content">Continent:</span>
-      </label><br>
-      <select for="input-5" name="continent" id="continent" onchange="getplaces(this.value,'country');">
-        <option value=""></option>
-      </select>
-    </span>
+  </div><br>
+  <div class="row">
 
-    <span class="input">
-      <label for="country">
-        <span class="input__label-content">Country:</span>
-      </label>
-      <select name="country" id="country" onchange="getplaces(this.value,'province');">
-        <option value=""></option>
-      </select>
-    </span>
+    <div class="col">
+      <span class="input">
+                  <span class="input__label-content">Continent:</span>
+        
+        <br><select for="input-5" name="continent" id="continent" onchange="getplaces(this.value,'country');">
+          <option value=""></option>
+        </select>
+      </span>
+    </div><br><br>
 
-    <span class="input">
-      <label for="province">
-        <span class="input__label-content">State / Provice:</span>
-      </label>
-      <select name="province" id="province" onchange="getplaces(this.value,'region')">
-        <option value=""></option>
-      </select>
-    </span>
 
-    <span class="input">
-      <label for="region">
-        <span class="input__label-content">County / Region:</span>
-      </label>
-      <select name="region" id="region" onchange="getplaces(this.value,'city')">
-        <option value=""></option>
-      </select>
-    </span>
+    <div class="col">
+      <span class="input">
+                <span class="input__label-content">Country:</span>
+        
+                <br><select name="country" id="country" onchange="getplaces(this.value,'province');">
+          <option value=""></option>
+        </select>
+      </span>
+    </div>
 
-    <span class="input">
-      <label for="region">
-        <span class="input__label-content">City:</span>
-      </label>
-      <select name="city" id="city">
-        <option value=""></option>
-      </select>
-    </span>
+  </div><br><br>
 
-    <span class="input" style="margin-top: 3rem;">
-      <input type="text" class="input__field" id="input-5" />
-      <label for="input-5" class="input__label">
-        <span class="input__label-content">ZIP Code</span>
-      </label>
-    </span>
+  <div class="row">
 
-    <span class="input">
-      <input type="tel" class="input__field" id="input-6" />
-      <label for="input-6" class="input__label">
+    <div class="col">
+      <span class="input">
+                 <span class="input__label-content">State / Province:</span>
+        
+                 <br><select name="province" id="province" onchange="getplaces(this.value,'region')">
+          <option value=""></option>
+        </select>
+      </span>
+    </div>
+
+    <div class="col">
+      <span class="input">
+               <span class="input__label-content">County / Region:</span>
+        
+               <br><select name="region" id="region" onchange="getplaces(this.value,'city')">
+          <option value=""></option>
+        </select>
+      </span>
+    </div>
+  </div><br><br>
+
+  <div class="row">
+
+    <div class="col">
+      <span class="input">
+               <span class="input__label-content">City:</span>
+        
+               <br><select name="city" id="city">
+          <option value=""></option>
+        </select>
+      </span>
+    </div>
+
+    <div class="col">
+      
+        <span class="input__label-content">Postal / ZIP Code</span>
+      
+      <span class="input">
+        <br><input type="text" class="input__field" id="pincode" />
+      </span>
+    </div>
+  </div><br><br>
+
+  <div class="row">
+    <div class="col">
+      
         <span class="input__label-content">Mobile</span>
-      </label>
-    </span>
+      
+      <span class="input">
+        <br><input type="tel" class="input__field" id="phone_number" />
+      </span>
+    </div>
 
+    <div class="col">
+      
+      <span class="input__label-content">Salary</span>
+    
     <span class="input">
-      <input type="tel" class="input__field" id="input-7" />
-      <label for="input-7" class="input__label">
-        <span class="input__label-content">Alt. mob</span>
-      </label>
+      <br><input type="number" class="input__field" id="salary" />
     </span>
-
-    <span class="input">
-      <input type="email" class="input__field" id="input-8" />
-      <label for="input-8" class="input__label">
-        <span class="input__label-content">E-mail</span>
-      </label>
-    </span>
-
-    <span id="dobin" class="input" style="margin-top: 2.4rem;">
-      <!-- <label for="dob">
-        <span class="input__label-content">Date of birth</span>
-      </label> -->
-      <input type="date" name="dob" id="dob"  style="width: 60%; height: 50%;">
-        <option value=""></option>
-      </select>
-    </span>
-
-    <span class="input">
-      <label for="role">
-        <span class="input__label-content">Role:</span>
-      </label>
-      <select name="role" id="role">
-        <option value=""></option>
-      </select>
-    </span>
-
-    <span class="input">
-      <label for="dept">
-        <span class="input__label-content">Department:</span>
-      </label>
-      <select name="dept" id="dept">
-        <option value=""></option>
-      </select>
-    </span>
-
-    <button id="send-button" type="button">Send</button>
-
   </div>
-  
-  <!-- partial -->
-  <script src="{% static "js/emp/jquery.min.js" %}"></script>
-  <script src="{% static "js/emp/script.js" %}"></script>
+  </div><br>
+
+  <div class="row">
+
+    <div class="col">
+      <span class="input">
+        
+          <span class="input__label-content">E-mail</span>
+        
+        <br><input type="email" class="input__field" id="useremail" />
+      </span>
+    </div>
+
+    <div class="col">
+        <span class="input__label-content">Date of birth</span>
+      
+      <span id="dobin" class="input">
+        <br><input type="date" name="dob" id="dob">
+        <option value=""></option>
+        </select>
+      </span>
+    </div>
+
+  </div><br>
+
+  <div class="row">
+
+    <div class="col">
+      <span class="input">
+             <span class="input__label-content">Role:</span>
+        
+             <br><select name="role" id="role">
+          <option value=""></option>
+        </select>
+      </span>
+    </div>
+
+    <div class="col">
+      <span class="input">
+             <span class="input__label-content">Team:</span>
+        
+             <br><select name="dept" id="team">
+          <option value=""></option>
+        </select>
+      </span>
+    </div>
+
+  </div><br>
+
+  <div class="row">
+    <div class="col">
+      <button id="send-button" type="button">Send</button>
+    </div>
+  </div>
+</div>
+
+<!-- partial -->
+<script src="{% static "js/emp/jquery.min.js" %}"></script>
+<script src="{% static "js/emp/script.js" %}"></script>
 
 {% endblock %}
