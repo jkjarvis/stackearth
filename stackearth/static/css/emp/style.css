@@ -14,35 +14,22 @@ body {
 }
 
 select {
-  width: 60%;
-  height: 50%;
+  width: 41.55%;
+  border: 0.5px solid;
+  border-radius: 5px;
+  height:65%;
+  
 }
-
-.container {
-  position: absolute;
-  /* width: 710px; */
-  /* height: 5em; */
-  /* left: 50%; */
-  /* top: 80%; */
-  /* bottom: 0%; */
-  /* margin-left: 50%; */
-  /* margin-top: -2.5em; */
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-content: center;
+#dob {
+  border: 1px solid cornflowerblue;
+  border-radius: 5px;
+  height:65%;
 }
-
-.input {
-  position: relative;
-  margin: 1em;
-  width: calc(50% - 2em);
-  height: 80px;
-}
-
-.message {
-  width: calc(100% - 2em);
-  height: 200px;
+.input__field {
+  /* border-color:#163B6F; */
+  border: 0.5px solid;
+  border-radius: 5px;
+  height:65%;
 }
 
 textarea {
@@ -50,89 +37,6 @@ textarea {
   resize: none;
 }
 
-.input__field {
-  position: absolute;
-  margin: 0.8em 0;
-  padding: 0.4em;
-  width: 100%;
-  height: calc(100% - 1.6em);
-  border: none;
-  border-radius: 0;
-  background: transparent;
-  color: #000000;
-  font-size: 1.55em;
-  font-weight: bold;
-  -webkit-appearance: none;/* for box shadows to show on iOS */
-}
-
-.input__field:focus {
-  outline: none;
-}
-
-.input__label {
-  position: absolute;
-  padding: 0 1em;
-  margin: 1.2em 0;
-  width: 60%;
-  /* overflow: hidden; */
-  white-space: nowrap;
-  height: calc(100% - 2.4em);
-  color: #12458D;
-  font-weight: bold;
-  font-size: 105%;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-.input__label-content {
-  position: relative;
-  display: block;
-  padding: 1.5em 0;
-  font-weight: bold;
-  font-size: 70.25%;
-  color: #12458D;
-  width: 100%;
-  transition: transform 0.3s;
-}
-
-.input__label::before,
-.input__label:after {
-  content: '';
-  position: absolute;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: #163B6F;
-  transition: transform 0.3s;
-}
-
-.input__label::before {
-  top: 0;
-}
-
-.input__label::after {
-  bottom: 0;
-}
-
-.input__field:focus + .input__label .input__label-content,
-.input--filled .input__label-content {
-  transform: translate3d(0, -90%, 0);
-}
-
-.input__field:focus + .input__label::before,
-.input--filled .input__label::before {
-  transform: translate3d(0, -0.5em, 0);
-}
-
-.input__field:focus + .input__label::after,
-.input--filled .input__label::after {
-  transform: translate3d(0, 0.5em, 0);
-}
 
 #send-button {
   height: 50px;
