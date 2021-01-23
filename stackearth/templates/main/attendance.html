@@ -1,0 +1,10 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+    <div id="attendance">
+        <input type="date" id='atdDate' onchange="fetchAttendance();">
+        <br>
+        <div id='attendanceReceived'>
+        </div>
+    </div>
+{% endblock %}

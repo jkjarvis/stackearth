@@ -21,6 +21,7 @@ from django.contrib.auth import authenticate, login as auth_login
 import requests
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from django.contrib.auth import logout
 
 
 @authentication_classes([SessionAuthentication, BasicAuthentication])
@@ -60,6 +61,10 @@ def login(request):
     else:
         response = {'message': 'Username or Password incorrect'}
         return redirect('main:loginForm')
+
+def logout(request):
+    logout(request)
+    return redirect('main:loginForm')
 
 
 class Get_employees_List(APIView):
@@ -225,7 +230,7 @@ def leave(request):
 @permission_classes((IsAuthenticated,))
 def leave_requests(request):
     leaves = Leave.objects.all()
-    serialized = leaveSerializer(leave, many=True)
+    serialized = leaveSerializer(leaves, many=True)
     return Response(serialized.data)
 
 
@@ -237,5 +242,23 @@ def leave_status(request):
     print(leaves)
     serialized = leaveSerializer(leaves, many=True)
     return Response(serialized.data)
+
+
+@api_view(('GET','POST',))
+@renderer_classes((TemplateHTMLRenderer, JSONRenderer))
+@permission_classes((IsAuthenticated,))
+def leave_approve(request):
+    if request.user.is_superuser:
+        data = json.load(request)
+        user = data['user']
+        from_date = data['from']
+        till_date = data['till']
+        status = data['status']
+        leave = Leave.objects.get(applicant=user,from_date=from_date,till_date=till_date)
+        leave.confirmed = True
+        leave.save()
+        return HttpResponse('ok')
+    else:
+        return HttpResponse('not allowed')
 
 # Create your views here.

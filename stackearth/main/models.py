@@ -63,6 +63,7 @@ def add_name(sender, instance, **kwargs):
 
 class Leave(models.Model):
     applicant = models.ForeignKey(User,on_delete=models.CASCADE)
+    name = models.CharField(max_length=300,blank=True)
     from_date = models.DateTimeField()
     till_date = models.DateTimeField()
     reason = models.TextField(max_length=300)
@@ -70,6 +71,10 @@ class Leave(models.Model):
 
     def __str__(self):
         return str(self.applicant)
+
+@receiver(pre_save, sender=Leave)
+def add_name(sender, instance, **kwargs):
+    instance.name = instance.applicant.first_name + ' ' + instance.applicant.last_name
 
 
 class Loan(models.Model):

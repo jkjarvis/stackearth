@@ -1,0 +1,11 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+    <div id='leaveRequest'>
+        <h3>Leave</h3><br>
+        From<input type="date" id='leaveFrom'><br>
+        Till<input type="date" id='leaveTill'><br>
+        Reason<textarea id="leaveReason"></textarea><br>
+        <button type="submit" onclick="leaveApplication();">Submit Leave Request</button>
+    </div>
+{% endblock %}
