@@ -5,7 +5,12 @@
 <link rel="stylesheet" href="{% static "css/emp/normalize.min.css" %}">
 <link rel="stylesheet" href="{% static "css/emp/style.css" %}">
 <script type="text/javascript" src="{% static "js/emp/geodata-jsr-class.js" %}"></script>
-<h2>Employee Information Form</h2>
+<script>
+  $(document).ready(function(){
+    loadRoleTeam();
+  })
+</script>
+<h2>Employee Information Form</h2><br>
 <!-- partial:index.partial.html -->
 <div class="container">
 
@@ -170,9 +175,7 @@
       <span class="input">
              <span class="input__label-content">Role:</span>
         
-             <br><select name="role" id="role">
-          <option value=""></option>
-        </select>
+             <br><div id='role'></div>
       </span>
     </div>
 
@@ -180,9 +183,7 @@
       <span class="input">
              <span class="input__label-content">Team:</span>
         
-             <br><select name="dept" id="team">
-          <option value=""></option>
-        </select>
+             <br><div id='team'></div>
       </span>
     </div>
 
@@ -190,7 +191,7 @@
 
   <div class="row">
     <div class="col">
-      <button id="send-button" type="button">Send</button>
+      <button id="send-button" type="button" onclick="addEmp();">Send</button>
     </div>
   </div>
 </div>

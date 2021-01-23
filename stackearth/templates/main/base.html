@@ -78,6 +78,12 @@
             </a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" href="{% url 'main:emp' %}">
+              <i class="mdi mdi-compass-outline menu-icon"></i>
+              <span class="menu-title">Add Employee</span>
+            </a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link"  href="{% url 'main:roleTeamPage' %}" aria-expanded="false" aria-controls="apps">
               <i class="mdi mdi-monitor-dashboard menu-icon"></i>
               <span class="menu-title">Add Role Or Team</span>
@@ -237,11 +243,7 @@
 
           
           <!-- content-wrapper ends -->
-          <footer class="footer">
-            <div class="d-sm-flex justify-content-center justify-content-sm-between">
-              <span class="text-muted text-center text-sm-left d-block d-sm-inline-block"></span>
-            </div>
-          </footer>
+          
         </div>
         <!-- main-panel ends -->
       </div>

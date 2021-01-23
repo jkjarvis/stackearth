@@ -29,6 +29,7 @@ urlpatterns = [
     path('leaveRequestPage',TemplateView.as_view(template_name="main/leaveRequest.html"),name='leaveRequestPage'),
     path('leaveStatusPage',TemplateView.as_view(template_name="main/leaveStatus.html"),name='leaveStatusPage'),
     path('roleTeamPage',TemplateView.as_view(template_name="main/add_team_role.html"),name='roleTeamPage'),    
+    path('emp',TemplateView.as_view(template_name="main/emp.html"),name='emp'),    
     path('search',TemplateView.as_view(template_name="main/Search.html"),name='search'),        
     path('saveTeam',views.save_team),
     path('saveRole',views.save_role),

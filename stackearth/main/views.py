@@ -87,7 +87,7 @@ def getAttendance(request):
             attendance = Attendance.objects.filter(date=date)
             if len(attendance) == 0:
                 for i in users:
-                    Attendance.objects.create(user=i,date=date)
+                    Attendance.objects.create(user=i,name=i.first_name+' '+i.last_name,date=date)
             
             attendance = Attendance.objects.filter(date=date)
             serialized = attendanceSerializer(attendance, many=True)
@@ -102,7 +102,6 @@ def createEmployee(request):
     dob = data['dob']
     email = data['email']
     ph_number = data['phone']
-    address = data['address']
     salary = data['salary']
     role = data['role']
     team = data['team']
