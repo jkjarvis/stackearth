@@ -1,0 +1,20 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<script>
+    $(document).ready(function(){
+        loadRoleTeam();
+    })
+</script>
+<div>
+    <input type="text" id="searchEmployee" class="form-control border-0"  placeholder="Search">
+    <button type="button" onclick="searchEmployee();">Search</button>
+    <div id='role'></div><button type="button" onclick="searchEmployee();">Search</button>
+    <div id='team'></div><button type="button" onclick="searchEmployeeByTeam();">Search</button>
+</div>
+<div class='container'><div id='searchResults'>
+</div></div>
+{% endblock %}
+
+
+

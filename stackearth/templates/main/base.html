@@ -19,6 +19,8 @@
     <!-- End layout styles -->
     <link rel="shortcut icon" href="{% static "images/favicon.png" %}" />
     <script src="{% static 'js/form.js' %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     <script>
       function getToken(){
         if(localStorage.getItem('token') == null){
@@ -62,15 +64,11 @@
               </div>
             </a>
           </li>
-          <li class="nav-item pt-3">
-            <form class="d-flex align-items-center" action="#">
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <i class="input-group-text border-0 mdi mdi-magnify"></i>
-                </div>
-                <input type="text" class="form-control border-0" placeholder="Search">
-              </div>
-            </form>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'main:search' %}">
+              <i class="mdi mdi-compass-outline menu-icon"></i>
+              <span class="menu-title">Search</span>
+            </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'main:home' %}">
@@ -81,7 +79,7 @@
           <li class="nav-item">
             <a class="nav-link"  href="{% url 'main:roleTeamPage' %}" aria-expanded="false" aria-controls="apps">
               <i class="mdi mdi-monitor-dashboard menu-icon"></i>
-              <span class="menu-title" >Add Role Or Team</span>
+              <span class="menu-title">Add Role Or Team</span>
               <i class="menu-arrow"></i>
             </a>
           </li>
@@ -268,6 +266,7 @@
     <script src="{% static "js/tooltips.js" %}"></script>
     <script src="{% static "js/popover.js" %}"></script>
     <script src="{% static "js/dashboard.js" %}"></script>
+
     <!-- End custom js for this page -->
   </body>
 </html>

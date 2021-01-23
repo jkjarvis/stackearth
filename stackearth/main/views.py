@@ -22,6 +22,7 @@ import requests
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from django.contrib.auth import logout
+from django.db.models import Q
 
 
 @authentication_classes([SessionAuthentication, BasicAuthentication])
@@ -275,5 +276,61 @@ def get_teams(request):
     teams = Team.objects.all()
     serialized = teamSerializer(teams, many=True)
     return Response(serialized.data)
+
+
+@api_view(('GET','POST',))
+@renderer_classes((TemplateHTMLRenderer, JSONRenderer))
+@permission_classes((IsAuthenticated,))
+def get_roles(request):
+    roles = Role.objects.all()
+    serialized = roleSerializer(roles, many=True)
+    return Response(serialized.data)
+
+
+@api_view(('GET','POST',))
+@renderer_classes((TemplateHTMLRenderer, JSONRenderer))
+@permission_classes((IsAuthenticated,))
+def searchEmployee(request):
+    data = json.load(request)
+    print(data)
+    query = data['query']
+    employee_list = Employee.objects.filter(
+        Q(user__username__icontains=query) | Q(user__first_name__icontains=query) | Q(user__last_name__icontains=query) | Q(email__icontains=query) | Q(phone_number__icontains=query)
+    )
+    serialized = employeeSerializer(employee_list, many=True)
+    return Response(serialized.data)
+
+
+@api_view(('GET','POST',))
+@renderer_classes((TemplateHTMLRenderer, JSONRenderer))
+@permission_classes((IsAuthenticated,))
+def searchEmployeeByRole(request):
+    data = json.load(request)
+    role = data['role']
+    try:
+        role = Role.objects.get(role=role)
+        employee_list = Employee.objects.filter(role=role)
+    except Role.DoesNotExist:
+        pass
+
+    serialized = employeeSerializer(employee_list, many=True)
+    return Response(serialized.data)
+
+
+@api_view(('GET','POST',))
+@renderer_classes((TemplateHTMLRenderer, JSONRenderer))
+@permission_classes((IsAuthenticated,))
+def searchEmployeeByTeam(request):
+    data = json.load(request)
+    print(data)
+    team = data['team']
+    team = Team.objects.get(team_name=team)
+    employee_list = Employee.objects.filter(team=team)
+    serialized = employeeSerializer(employee_list, many=True)
+    return Response(serialized.data)
+
+
+
+    
 
 

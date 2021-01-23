@@ -288,7 +288,7 @@ const csrftoken = getCookie('csrftoken');
     }
 
     function saveRole(role){
-      var data = {'role': $('#rolename').val(),'team':$('teamrole').val()};
+      var data = {'role': $('#rolename').val(),'team':$('#teamrole').val()};
       $.ajax({
         type: 'POST',
         url: 'http://127.0.0.1:8000/saveRole',
@@ -299,3 +299,117 @@ const csrftoken = getCookie('csrftoken');
         data: JSON.stringify(data),
       });
     }
+
+    function searchEmployee(){
+      console.log('okk');
+      var data = {'query': $('#searchEmployee').val()};
+      $.ajax({
+        type: 'POST',
+        url: 'http://127.0.0.1:8000/searchEmployee',
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        crossDomain: true,
+        headers : {Authorization: token},
+        data: JSON.stringify(data),
+        success: function(data){
+          console.log(data);
+          var abc="<div class='row'><div class='col'><h5>Email</h5></div><div class='col'><h5>Date-Of-Birth</h5></div><div class='col'><h5>Phone-Number</h5></div><div class='col'><h5>Salary</h5></div></div>";
+          data.forEach(element => {
+            abc+="<div class='row'><div class='col'>"+element.email+"</div>";
+            abc+="<div class='col'>"+element.dob+"</div>";
+            abc+="<div class='col'>"+element.phone_number+"</div>";
+            abc+="<div class='col'>"+element.salary+"</div>";
+          })
+          $('#searchResults').html(abc);
+        }
+      });
+    }
+
+  function loadRoleTeam(){
+    console.log('a');
+    $.ajax({
+      type: 'POST',
+      url: 'http://127.0.0.1:8000/getTeams',
+      dataType: 'json',
+      contentType: "application/json; charset=utf-8",
+      crossDomain: true,
+      headers : {Authorization: token},
+      success: function(response){
+          var abc="";
+          console.log(response);
+          response.forEach(element => {
+            abc+="<select id='teamrole'>";
+            abc+="<option value="+element.team_name+">"+element.team_name+"</option>";
+            abc+="</select>";
+          })
+          $('#team').html(abc);
+      }
+    });
+
+    $.ajax({
+      type: 'POST',
+      url: 'http://127.0.0.1:8000/getRoles',
+      dataType: 'json',
+      contentType: "application/json; charset=utf-8",
+      crossDomain: true,
+      headers : {Authorization: token},
+      success: function(response){
+          var abc="";
+          console.log(response);
+          response.forEach(element => {
+            abc+="<select id='emprole'>";
+            abc+="<option value="+element.role+">"+element.role+"</option>";
+            abc+="</select>";
+          })
+          $('#role').html(abc);
+      }
+    });
+  }
+
+  function searchEmployeeByTeam(){
+    var data = {'team': $('#teamrole').val()};
+    $.ajax({
+      type: 'POST',
+      url: 'http://127.0.0.1:8000/searchEmployeeByTeam',
+      dataType: 'json',
+      contentType: "application/json; charset=utf-8",
+      crossDomain: true,
+      headers : {Authorization: token},
+      data: JSON.stringify(data),
+      success: function(data){
+        console.log(data);
+        var abc="<div class='row'><div class='col'><h5>Email</h5></div><div class='col'><h5>Date-Of-Birth</h5></div><div class='col'><h5>Phone-Number</h5></div><div class='col'><h5>Salary</h5></div></div>";
+        data.forEach(element => {
+          abc+="<div class='row'><div class='col'>"+element.email+"</div>";
+          abc+="<div class='col'>"+element.dob+"</div>";
+          abc+="<div class='col'>"+element.phone_number+"</div>";
+          abc+="<div class='col'>"+element.salary+"</div>";
+        })
+        $('#searchResults').html(abc);
+      }
+    });
+  }
+
+  function searchEmployeeByTeam(){
+    var data = {'team': $('#emprole').val()};
+    $.ajax({
+      type: 'POST',
+      url: 'http://127.0.0.1:8000/searchEmployeeByRole',
+      dataType: 'json',
+      contentType: "application/json; charset=utf-8",
+      crossDomain: true,
+      headers : {Authorization: token},
+      data: JSON.stringify(data),
+      success: function(data){
+        console.log(data);
+        var abc="<div class='row'><div class='col'><h5>Email</h5></div><div class='col'><h5>Date-Of-Birth</h5></div><div class='col'><h5>Phone-Number</h5></div><div class='col'><h5>Salary</h5></div></div>";
+        data.forEach(element => {
+          abc+="<div class='row'><div class='col'>"+element.email+"</div>";
+          abc+="<div class='col'>"+element.dob+"</div>";
+          abc+="<div class='col'>"+element.phone_number+"</div>";
+          abc+="<div class='col'>"+element.salary+"</div>";
+        })
+        $('#searchResults').html(abc);
+      }
+    });
+  }
