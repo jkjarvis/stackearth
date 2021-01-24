@@ -27,6 +27,7 @@ SECRET_KEY = '2k2dc)m#r!&asu#vh^*u6re99+d*y&js-xg#cg+my64$)pgh^$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+SITE_ID = 2
 ALLOWED_HOSTS = ['127.0.0.1', '.pythonanywhere.com']
 
 
@@ -46,7 +47,7 @@ INSTALLED_APPS = [
     
 ]
 
-SITE_ID = 1
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

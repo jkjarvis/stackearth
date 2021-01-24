@@ -31,6 +31,7 @@ from django.contrib.sites.models import Site
 def home(request):
     current_site = Site.objects.get_current()
     currentSite = current_site.domain
+    print(currentSite)
     user = request.user
     first_name = user.first_name
     last_name = user.last_name
@@ -51,10 +52,12 @@ def current_user(request):
 
 
 def login(request):
+    current_site = Site.objects.get_current()
+    currentSite = current_site.domain
     username = request.POST['username']
     password = request.POST['password']
     user = authenticate(username=username,password=password)
-    url = 'http://127.0.0.1:8000/api-token-auth/'
+    url = currentSite+'api-token-auth/'
     data = {'username':username,'password':password}
     if user != None:
         auth_login(request,user)
