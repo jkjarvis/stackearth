@@ -162,6 +162,9 @@ a {
   </script> -->
 </head>
   <body>
+    <script>
+      console.log('{{ site }}');
+    </script>
 <div class="container">
     <form class="login" method="POST" action="{{ site }}login">
       {% csrf_token %}
