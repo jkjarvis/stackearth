@@ -27,12 +27,13 @@
       function getToken(){
         if(localStorage.getItem('token') == null){
             localStorage.setItem('token','{{ token }}');
+            
             var token = localStorage.getItem('token');
             console.log(token);
 
             $.ajax({
             type: 'POST',
-            url: 'http://127.0.0.1:8000/currentuser',
+            url: '{{ site }}currentuser',
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             crossDomain: true,
