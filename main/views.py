@@ -39,7 +39,9 @@ def home(request):
     return render(request, 'main/home.html',{'first_name': first_name,'last_name':last_name,'token':token,'site':currentSite})
 
 def loginForm(request):
-    return render(request, 'main/login.html')
+    current_site = Site.objects.get_current()
+    currentSite = current_site.domain
+    return render(request, 'main/login.html',{'site':currentSite})
 
 
 def emp(request):
