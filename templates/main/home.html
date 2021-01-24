@@ -1,9 +1,9 @@
 {% extends 'main/base.html' %}
 {% load static %}
-
+<script>
         $.ajax({
         type: 'POST',
-        url: 'http://127.0.0.1:8000/currentuser',
+        url: Site+'currentuser',
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         crossDomain: true,
@@ -11,6 +11,7 @@
         success: function(user){
           user = JSON.parse(user);
           var admin = user['admin'];
+          sessionStorage.setItem('Site',{{ site }});
           sessionStorage.setItem('admin',admin);
           console.log(admin);
         }

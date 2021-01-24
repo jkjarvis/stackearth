@@ -23,16 +23,19 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from django.contrib.auth import logout
 from django.db.models import Q
+from django.contrib.sites.models import Site
 
 
 @authentication_classes([SessionAuthentication, BasicAuthentication])
 @permission_classes([IsAuthenticated])
 def home(request):
+    current_site = Site.objects.get_current()
+    currentSite = current_site.domain
     user = request.user
     first_name = user.first_name
     last_name = user.last_name
     token = request.session['token']
-    return render(request, 'main/home.html',{'first_name': first_name,'last_name':last_name,'token':token})
+    return render(request, 'main/home.html',{'first_name': first_name,'last_name':last_name,'token':token,'site':currentSite})
 
 def loginForm(request):
     return render(request, 'main/login.html')

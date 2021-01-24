@@ -16,10 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from main import views
-
+from django.contrib.staticfiles.urls import static
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from . import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include(('main.urls','main'),namespace='main')),
     path('password_reset/', include('django.contrib.auth.urls'),name='password_reset'),
 ]
+
+urlpatterns += staticfiles_urlpatterns()
