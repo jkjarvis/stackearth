@@ -18,6 +18,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATE_DIR = os.path.join(BASE_DIR,'templates')
 STATIC_DIR = os.path.join(BASE_DIR,'static')
 
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
@@ -28,6 +29,7 @@ SECRET_KEY = '2k2dc)m#r!&asu#vh^*u6re99+d*y&js-xg#cg+my64$)pgh^$'
 DEBUG = True
 
 SITE_ID = 2
+
 ALLOWED_HOSTS = ['127.0.0.1', '.pythonanywhere.com']
 
 
