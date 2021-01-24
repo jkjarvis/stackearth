@@ -187,27 +187,6 @@ const csrftoken = getCookie('csrftoken');
       })
     }
 
-    function login(){
-      var data = {username : $('#username').val(),password: $('#password').val()}
-      console.log('login');
-      $.ajax({
-        type: 'POST',
-        url: Site+'login',
-        dataType: 'json',
-        contentType: "application/json; charset=utf-8",
-        crossDomain: true,
-        data: JSON.stringify(data),
-        success: function(response){
-          console.log(response);
-          response = JSON.parse(response);
-          alert(response['message']);
-          if(response['status'] == 200){
-            const loginToken = response['token'];
-            sessionStorage.setItem('token',loginToken);
-          }
-        }
-      })
-    }
 
     function approveLeaves(){
       $.ajax({
