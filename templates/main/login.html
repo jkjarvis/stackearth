@@ -163,7 +163,7 @@ a {
 </head>
   <body>
 <div class="container">
-    <form class="login" method="POST" action="{{ Site }}login">
+    <form class="login" method="POST" action="{{ site }}login">
       {% csrf_token %}
       <input type="text" placeholder="Username" name="username">
       <input type="password" placeholder="Password" name="password">
