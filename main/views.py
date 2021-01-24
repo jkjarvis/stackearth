@@ -64,6 +64,7 @@ def login(request):
     if user != None:
         auth_login(request,user)
         r = requests.post(url,data=data)
+        print(r.status_code)
         response = r.json()
         request.session['token'] = response['token']
         return redirect('main:home')
