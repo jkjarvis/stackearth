@@ -55,8 +55,9 @@ def login(request):
     if user != None:
         auth_login(request,user)
         r = requests.post(url,data=data)
-        response = r.json()
-        request.session['token'] = response['token']
+        print(r)
+        res = r.json()
+        request.session['token'] = res['token']
         return redirect('main:home')
     else:
         response = {'message': 'Username or Password incorrect'}
