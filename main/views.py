@@ -23,25 +23,18 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from django.contrib.auth import logout
 from django.db.models import Q
-from django.contrib.sites.models import Site
 
 
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated])
+
 def home(request):
-    current_site = Site.objects.get_current()
-    currentSite = current_site.domain
-    print(currentSite)
     user = request.user
     first_name = user.first_name
     last_name = user.last_name
     token = request.session['token']
-    return render(request, 'main/home.html',{'first_name': first_name,'last_name':last_name,'token':token,'site':currentSite})
+    return render(request, 'main/home.html',{'first_name': first_name,'last_name':last_name,'token':token})
 
 def loginForm(request):
-    current_site = Site.objects.get_current()
-    currentSite = current_site.domain
-    return render(request, 'main/login.html',{'site':currentSite})
+    return render(request, 'main/login.html')
 
 
 def emp(request):
@@ -54,17 +47,14 @@ def current_user(request):
 
 
 def login(request):
-    current_site = Site.objects.get_current()
-    currentSite = current_site.domain
     username = request.POST['username']
     password = request.POST['password']
     user = authenticate(username=username,password=password)
-    url = currentSite+'api-token-auth/'
+    url = 'http://127.0.0.1:8000/api-token-auth/'
     data = {'username':username,'password':password}
     if user != None:
         auth_login(request,user)
         r = requests.post(url,data=data)
-        print(r.status_code)
         response = r.json()
         request.session['token'] = response['token']
         return redirect('main:home')
@@ -153,7 +143,8 @@ def createEmployee(request):
 def saveAttendance(request):
     data = json.load(request)
     Present = False
-    if data['status'] == 'present':
+    print(data)
+    if data['status'] == True:
         Present= True
     user = Attendance.objects.get(user=data['user'],date=data['date'])
     user.present = Present
@@ -257,8 +248,13 @@ def save_team(request):
         data = json.load(request)
         print(data)
         team_name = data['team']
-        Team.objects.create(team_name=team_name)
-        return HttpResponse('ok')
+        try:
+            team = Team.objects.get(team_name=team_name)
+        except Team.DoesNotExist:
+            Team.objects.create(team_name=team_name)
+            return HttpResponse('ok')
+        else:
+            return HttpResponse('already Exists')
     else:
         return HttpResponse('Not allowed')
 
@@ -270,9 +266,14 @@ def save_role(request):
         data = json.load(request)
         team_name = data['team']
         role = data['role']
-        team = Team.objects.get(team_name=team_name)
-        Role.objects.create(role=role,team=team)
-        return HttpResponse('ok')
+        try:
+            Role.objects.get(role=role)
+        except Role.DoesNotExist:
+            team = Team.objects.get(team_name=team_name)
+            Role.objects.create(role=role,team=team)
+            return HttpResponse('ok')
+        else:
+            return HttpResponse('already exists')
     else:
         return HttpResponse('Not allowed')
 

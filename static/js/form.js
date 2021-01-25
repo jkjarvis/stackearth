@@ -1,11 +1,10 @@
 var token = 'Token '+localStorage.getItem('token');
 var admin = localStorage.getItem('admin');
-var Site = localStorage.getItem('Site');
 function addEmp(){
   var empdata = {firstName:$('#fname').val(),lastName: $('#lname').val(),dob:$('#dob').val(),email:$('#useremail').val(),phone:$('#phone_number').val(),salary:$('#salary').val(),role:$('#role').val(),team:$('#team').val(),house_number:$('#house_number').val(),street:$('#street').val(),city:$('#city').val(),state:$('#province').val(),pincode:$('#pincode').val()}
     $.ajax({
       type: 'POST',
-      url: Site+'createEmployee',
+      url: 'http://127.0.0.1:8000/createEmployee',
       dataType: 'json',
       data:JSON.stringify(empdata),
       
@@ -41,7 +40,7 @@ const csrftoken = getCookie('csrftoken');
     if($admin == 'true'){
       $.ajax({
         type: 'POST',
-        url: Site+'getAttendance',
+        url: 'http://127.0.0.1:8000/getAttendance',
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         crossDomain: true,
@@ -49,19 +48,20 @@ const csrftoken = getCookie('csrftoken');
         data:JSON.stringify(atdDate),
         
         success: function(attendance){ 
-          var abc="";
+          var abc="<div class='container'>";
           console.log('ok');
           console.log($admin);
           console.log(attendance);
             attendance.forEach(element => {
               // abc+='<div class="col"'+element.name+'<select>'+element.present?'<option selected value="Present">Present</option><option value="Absent">Absent</option>':'<option selected value="Absent">Absent</option><option value="Present">Present</option>'+'</select>'+'</li>';
-                abc+='<div class="container"><div class="row">';
+                abc+='<div class="row">';
                 abc+='<div class="col">'+element.name+'</div>';
-                abc+='<div class="col"><select id="'+element.name+'" onchange="saveAttendance('+element.user+',$(\'#'+element.name+'\').val());">';
+                abc+='<div class="col"><select class="form-select form-select-lg mb-3" id="atd'+element.user+'" onchange="saveAttendance('+element.user+',$(\'#atd'+element.user+'\').val());">';
                 abc+= element.present? '<option selected value="present">Present</option><option value="absent">Absent</option>': '<option selected value="absent">Absent</option><option value="present">Present</option>'
                 abc+='</select></div>';
-                abc+='</div></div>';
+                abc+='</div>';
               });
+              abc+= "</div>";
             
 
             $('#attendanceReceived').html(abc);
@@ -73,7 +73,7 @@ const csrftoken = getCookie('csrftoken');
     else{
       $.ajax({
         type: 'POST',
-        url: Site+'attendancePercent',
+        url: 'http://127.0.0.1:8000/attendancePercent',
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         crossDomain: true,
@@ -102,10 +102,11 @@ const csrftoken = getCookie('csrftoken');
         status: attendance,
         date : date,
       }
+      console.log(data);
 
       $.ajax({
         type: 'POST',
-        url: Site+'saveAttendance',
+        url: 'http://127.0.0.1:8000/saveAttendance',
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         crossDomain: true,
@@ -119,7 +120,7 @@ const csrftoken = getCookie('csrftoken');
       var $crf_token = csrftoken;
       $.ajax({
         type: 'POST',
-        url: Site+'attendancePercent',
+        url: 'http://127.0.0.1:8000/attendancePercent',
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         crossDomain: true,
@@ -132,7 +133,7 @@ const csrftoken = getCookie('csrftoken');
       var $crf_token = csrftoken;
       $.ajax({
         type: 'POST',
-        url: Site+'currentuser',
+        url: 'http://127.0.0.1:8000/currentuser',
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         crossDomain: true,
@@ -148,7 +149,7 @@ const csrftoken = getCookie('csrftoken');
       
       $.ajax({
         type: 'POST',
-        url: Site+'leave',
+        url: 'http://127.0.0.1:8000/leave',
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         crossDomain: true,
@@ -164,7 +165,7 @@ const csrftoken = getCookie('csrftoken');
     function leaveStatus(){     
       $.ajax({
         type: 'POST',
-        url: Site+'leave_status',
+        url: 'http://127.0.0.1:8000/leave_status',
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         crossDomain: true,
@@ -192,7 +193,7 @@ const csrftoken = getCookie('csrftoken');
       console.log('login');
       $.ajax({
         type: 'POST',
-        url: Site+'login',
+        url: 'http://127.0.0.1:8000/login',
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         crossDomain: true,
@@ -212,7 +213,7 @@ const csrftoken = getCookie('csrftoken');
     function approveLeaves(){
       $.ajax({
         type: 'POST',
-        url: Site+'leave_requests',
+        url: 'http://127.0.0.1:8000/leave_requests',
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         crossDomain: true,
@@ -227,7 +228,7 @@ const csrftoken = getCookie('csrftoken');
             abc+="<div class='col'>"+element.from_date+"</div>";
             abc+="<div class='col'>"+element.till_date+"</div>";
             abc+="<div class='col'><p>"+element.reason+"</p></div>";
-            abc+="<div class='col'><select id='approve"+element.applicant+"' onchange='postLeaveApprove("+element.applicant+",\""+element.from_date+"\",\""+element.till_date+"\",$(\"#approve"+element.applicant+"\").val());'>";
+            abc+="<div class='col'><select class='form-select form-select-lg mb-3' id='approve"+element.applicant+"' onchange='postLeaveApprove("+element.applicant+",\""+element.from_date+"\",\""+element.till_date+"\",$(\"#approve"+element.applicant+"\").val());'>";
             abc+=element.confirmed?"<option selected value='true'>Approved</option><option  value='false'>Not Approved</option>" : "<option selected  value='false'>Not Approved</option><option  value='true'>Approved</option>";
             abc+="</select></div></div>";
 
@@ -244,7 +245,7 @@ const csrftoken = getCookie('csrftoken');
       console.log(data);
       $.ajax({
         type: 'POST',
-        url: Site+'leave_approve',
+        url: 'http://127.0.0.1:8000/leave_approve',
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         crossDomain: true,
@@ -257,7 +258,7 @@ const csrftoken = getCookie('csrftoken');
       console.log('reached');
       $.ajax({
         type: 'POST',
-        url: Site+'getTeams',
+        url: 'http://127.0.0.1:8000/getTeams',
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         crossDomain: true,
@@ -265,21 +266,22 @@ const csrftoken = getCookie('csrftoken');
         success: function(data){
           var abc="";
           console.log(data);
+          abc+="<select id='teamrole'>";
           data.forEach(element => {
-            abc+="<select id='teamrole'>";
             abc+="<option value="+element.team_name+">"+element.team_name+"</option>";
-            abc+="</select>";
+            
           })
+          abc+="</select>";
           $('#roleTeam').html(abc);
         }
       });
     }
 
-    function saveTeam(team){
+    function saveTeam(){
       var data = {'team' : $('#teamname').val()};
       $.ajax({
         type: 'POST',
-        url: Site+'saveTeam',
+        url: 'http://127.0.0.1:8000/saveTeam',
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         crossDomain: true,
@@ -288,11 +290,11 @@ const csrftoken = getCookie('csrftoken');
       });
     }
 
-    function saveRole(role){
+    function saveRole(){
       var data = {'role': $('#rolename').val(),'team':$('#teamrole').val()};
       $.ajax({
         type: 'POST',
-        url: Site+'saveRole',
+        url: 'http://127.0.0.1:8000/saveRole',
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         crossDomain: true,
@@ -306,7 +308,7 @@ const csrftoken = getCookie('csrftoken');
       var data = {'query': $('#searchEmployee').val()};
       $.ajax({
         type: 'POST',
-        url: Site+'searchEmployee',
+        url: 'http://127.0.0.1:8000/searchEmployee',
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         crossDomain: true,
@@ -330,7 +332,7 @@ const csrftoken = getCookie('csrftoken');
     console.log('a');
     $.ajax({
       type: 'POST',
-      url: Site+'getTeams',
+      url: 'http://127.0.0.1:8000/getTeams',
       dataType: 'json',
       contentType: "application/json; charset=utf-8",
       crossDomain: true,
@@ -338,18 +340,20 @@ const csrftoken = getCookie('csrftoken');
       success: function(response){
           var abc="";
           console.log(response);
+          abc+="<br><label for='teamrole'>Team Role:</label><br><select class='form-select form-select-lg mb-3' id='teamrole'>";
           response.forEach(element => {
-            abc+="<select id='teamrole'>";
+            
             abc+="<option value="+element.team_name+">"+element.team_name+"</option>";
-            abc+="</select>";
+            
           })
+          abc+="</select><br>";
           $('#team').html(abc);
       }
     });
 
     $.ajax({
       type: 'POST',
-      url: Site+'getRoles',
+      url: 'http://127.0.0.1:8000/getRoles',
       dataType: 'json',
       contentType: "application/json; charset=utf-8",
       crossDomain: true,
@@ -357,11 +361,13 @@ const csrftoken = getCookie('csrftoken');
       success: function(response){
           var abc="";
           console.log(response);
+          abc+="<br><label for='emprole'>Employee Role:</label><br><select class='form-select form-select-lg mb-3' id='emprole'>";
           response.forEach(element => {
-            abc+="<select id='emprole'>";
+            
             abc+="<option value="+element.role+">"+element.role+"</option>";
-            abc+="</select>";
+            
           })
+          abc+="</select><br>";
           $('#role').html(abc);
       }
     });
@@ -371,7 +377,7 @@ const csrftoken = getCookie('csrftoken');
     var data = {'team': $('#teamrole').val()};
     $.ajax({
       type: 'POST',
-      url: Site+'searchEmployeeByTeam',
+      url: 'http://127.0.0.1:8000/searchEmployeeByTeam',
       dataType: 'json',
       contentType: "application/json; charset=utf-8",
       crossDomain: true,
@@ -391,11 +397,11 @@ const csrftoken = getCookie('csrftoken');
     });
   }
 
-  function searchEmployeeByTeam(){
-    var data = {'team': $('#emprole').val()};
+  function searchEmployeeByRole(){
+    var data = {'role': $('#emprole').val()};
     $.ajax({
       type: 'POST',
-      url: Site+'searchEmployeeByRole',
+      url: 'http://127.0.0.1:8000/searchEmployeeByRole',
       dataType: 'json',
       contentType: "application/json; charset=utf-8",
       crossDomain: true,
