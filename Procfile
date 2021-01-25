@@ -1,0 +1,1 @@
+web: gunicorn stackearth.wsgi --log-file -
