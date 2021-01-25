@@ -1,9 +1,10 @@
 {% extends 'main/base.html' %}
 {% load static %}
-
+<script>
+      function getToken(){
         $.ajax({
         type: 'POST',
-        url: 'http://127.0.0.1:8000/currentuser',
+        url: 'http://stackearth.pythonanywhere.com/currentuser',
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         crossDomain: true,
@@ -15,12 +16,6 @@
           console.log(admin);
         }
       });
-      }
-    </script>
-    <script>
-      function show(name){
-        var x = document.getElementById(name);
-        x.style.display = 'block';
       }
     </script>
   </head>

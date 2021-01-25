@@ -4,7 +4,7 @@ function addEmp(){
   var empdata = {firstName:$('#fname').val(),lastName: $('#lname').val(),dob:$('#dob').val(),email:$('#useremail').val(),phone:$('#phone_number').val(),salary:$('#salary').val(),role:$('#role').val(),team:$('#team').val(),house_number:$('#house_number').val(),street:$('#street').val(),city:$('#city').val(),state:$('#province').val(),pincode:$('#pincode').val()}
     $.ajax({
       type: 'POST',
-      url: 'http://127.0.0.1:8000/createEmployee',
+      url: 'http://stackearth.pythonanywhere.com/createEmployee',
       dataType: 'json',
       data:JSON.stringify(empdata),
       
@@ -40,7 +40,7 @@ const csrftoken = getCookie('csrftoken');
     if($admin == 'true'){
       $.ajax({
         type: 'POST',
-        url: 'http://127.0.0.1:8000/getAttendance',
+        url: 'http://stackearth.pythonanywhere.com/getAttendance',
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         crossDomain: true,
@@ -73,7 +73,7 @@ const csrftoken = getCookie('csrftoken');
     else{
       $.ajax({
         type: 'POST',
-        url: 'http://127.0.0.1:8000/attendancePercent',
+        url: 'http://stackearth.pythonanywhere.com/attendancePercent',
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         crossDomain: true,
@@ -106,7 +106,7 @@ const csrftoken = getCookie('csrftoken');
 
       $.ajax({
         type: 'POST',
-        url: 'http://127.0.0.1:8000/saveAttendance',
+        url: 'http://stackearth.pythonanywhere.com/saveAttendance',
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         crossDomain: true,
@@ -120,7 +120,7 @@ const csrftoken = getCookie('csrftoken');
       var $crf_token = csrftoken;
       $.ajax({
         type: 'POST',
-        url: 'http://127.0.0.1:8000/attendancePercent',
+        url: 'http://stackearth.pythonanywhere.com/attendancePercent',
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         crossDomain: true,
@@ -133,7 +133,7 @@ const csrftoken = getCookie('csrftoken');
       var $crf_token = csrftoken;
       $.ajax({
         type: 'POST',
-        url: 'http://127.0.0.1:8000/currentuser',
+        url: 'http://stackearth.pythonanywhere.com/currentuser',
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         crossDomain: true,
@@ -149,7 +149,7 @@ const csrftoken = getCookie('csrftoken');
       
       $.ajax({
         type: 'POST',
-        url: 'http://127.0.0.1:8000/leave',
+        url: 'http://stackearth.pythonanywhere.com/leave',
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         crossDomain: true,
@@ -165,7 +165,7 @@ const csrftoken = getCookie('csrftoken');
     function leaveStatus(){     
       $.ajax({
         type: 'POST',
-        url: 'http://127.0.0.1:8000/leave_status',
+        url: 'http://stackearth.pythonanywhere.com/leave_status',
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         crossDomain: true,
@@ -193,7 +193,7 @@ const csrftoken = getCookie('csrftoken');
       console.log('login');
       $.ajax({
         type: 'POST',
-        url: 'http://127.0.0.1:8000/login',
+        url: 'http://stackearth.pythonanywhere.com/login',
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         crossDomain: true,
@@ -213,7 +213,7 @@ const csrftoken = getCookie('csrftoken');
     function approveLeaves(){
       $.ajax({
         type: 'POST',
-        url: 'http://127.0.0.1:8000/leave_requests',
+        url: 'http://stackearth.pythonanywhere.com/leave_requests',
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         crossDomain: true,
@@ -245,7 +245,7 @@ const csrftoken = getCookie('csrftoken');
       console.log(data);
       $.ajax({
         type: 'POST',
-        url: 'http://127.0.0.1:8000/leave_approve',
+        url: 'http://stackearth.pythonanywhere.com/leave_approve',
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         crossDomain: true,
@@ -258,7 +258,7 @@ const csrftoken = getCookie('csrftoken');
       console.log('reached');
       $.ajax({
         type: 'POST',
-        url: 'http://127.0.0.1:8000/getTeams',
+        url: 'http://stackearth.pythonanywhere.com/getTeams',
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         crossDomain: true,
@@ -281,7 +281,7 @@ const csrftoken = getCookie('csrftoken');
       var data = {'team' : $('#teamname').val()};
       $.ajax({
         type: 'POST',
-        url: 'http://127.0.0.1:8000/saveTeam',
+        url: 'http://stackearth.pythonanywhere.com/saveTeam',
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         crossDomain: true,
@@ -294,7 +294,7 @@ const csrftoken = getCookie('csrftoken');
       var data = {'role': $('#rolename').val(),'team':$('#teamrole').val()};
       $.ajax({
         type: 'POST',
-        url: 'http://127.0.0.1:8000/saveRole',
+        url: 'http://stackearth.pythonanywhere.com/saveRole',
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         crossDomain: true,
@@ -308,7 +308,7 @@ const csrftoken = getCookie('csrftoken');
       var data = {'query': $('#searchEmployee').val()};
       $.ajax({
         type: 'POST',
-        url: 'http://127.0.0.1:8000/searchEmployee',
+        url: 'http://stackearth.pythonanywhere.com/searchEmployee',
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         crossDomain: true,
@@ -332,7 +332,7 @@ const csrftoken = getCookie('csrftoken');
     console.log('a');
     $.ajax({
       type: 'POST',
-      url: 'http://127.0.0.1:8000/getTeams',
+      url: 'http://stackearth.pythonanywhere.com/getTeams',
       dataType: 'json',
       contentType: "application/json; charset=utf-8",
       crossDomain: true,
@@ -353,7 +353,7 @@ const csrftoken = getCookie('csrftoken');
 
     $.ajax({
       type: 'POST',
-      url: 'http://127.0.0.1:8000/getRoles',
+      url: 'http://stackearth.pythonanywhere.com/getRoles',
       dataType: 'json',
       contentType: "application/json; charset=utf-8",
       crossDomain: true,
@@ -377,7 +377,7 @@ const csrftoken = getCookie('csrftoken');
     var data = {'team': $('#teamrole').val()};
     $.ajax({
       type: 'POST',
-      url: 'http://127.0.0.1:8000/searchEmployeeByTeam',
+      url: 'http://stackearth.pythonanywhere.com/searchEmployeeByTeam',
       dataType: 'json',
       contentType: "application/json; charset=utf-8",
       crossDomain: true,
@@ -401,7 +401,7 @@ const csrftoken = getCookie('csrftoken');
     var data = {'role': $('#emprole').val()};
     $.ajax({
       type: 'POST',
-      url: 'http://127.0.0.1:8000/searchEmployeeByRole',
+      url: 'http://stackearth.pythonanywhere.com/searchEmployeeByRole',
       dataType: 'json',
       contentType: "application/json; charset=utf-8",
       crossDomain: true,

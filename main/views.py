@@ -50,7 +50,7 @@ def login(request):
     username = request.POST['username']
     password = request.POST['password']
     user = authenticate(username=username,password=password)
-    url = 'http://127.0.0.1:8000/api-token-auth/'
+    url = 'http://stackearth.pythonanywhere.com/api-token-auth/'
     data = {'username':username,'password':password}
     if user != None:
         auth_login(request,user)
